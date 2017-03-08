@@ -1,0 +1,39 @@
+﻿<div class="wrapper">
+    <div class="row main">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">Login</h1>
+                <hr />
+            </div>
+        </div>
+        <div class="main-login main-center">
+            <form class="form-horizontal" method="post" action="#">
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Email</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" ng-model="user.email" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter your Password" ng-model="user.password" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <button type="button" class="btn btn-primary btn-lg login-button" ng-click="uc.login(user)">Login</button>
+                </div>
+                <div class="login-register">
+                    <a ui-sref="register">Register</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,55 @@
+﻿<div class="row">
+    <!--Card-->
+    <div ng-repeat="car in cc.cars" class="col-xs-12 col-sm-6 col-md-3 car-wrapper">
+        <div class="card">
+            <!--Card image-->
+            <div class="view overlay hm-white-light">
+                <img ng-src="{{car.imageUrl}}" class="img-fluid" alt="">
+                <a href="#">
+                    <div class="mask flex-center"></div>
+                </a>
+                <!--/.Card image-->
+                <!--Card content-->
+                <div class="card-block" style="text-align:center;">
+                    <!--Title-->
+                    <h4 class="card-title">{{car.brand}} {{car.model}}</h4>
+                    <!--Text-->
+                    <p class="card-text">Color: {{car.color}}</p>
+                    <p class="card-text">Rented by: {{car.rentedBy}}</p>
+                    <p class="card-text">Status: {{car.status}}</p>
+                    <!--<p ng-hide="!car.rentedUntil" class="card-text">Rented until: {{car.rentedUntil | date:'yyyy-MM-dd hh:mm a'}}</p>-->
+                    <button type="button" class="btn btn-lg blue darken-4" ng-click="cc.rent(car,cc.cars)">
+                        Rent
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="templateId">
+    <h3>{{vm.car.brand}} {{vm.car.model}}</h3>
+    <div>
+        <form name="rentForm" ng-submit="vm.rentCar(vm.car)">
+            <div class="form-group">
+                <label for="renter">Renter</label>
+                <input type="text" class="form-control" id="renter" placeholder="Renter">
+            </div>
+            <!--<div class="form-group">
+                <label for="renter">Rent From</label>
+                <input type="datetime-local" class="form-control" id="renter-from" name="rentFrom" placeholder="Rent From" ng-model="vm.car.rentedUntil" min="2017-03-03T09:00" value="{{vm.car.rentedUntil | date:'yyyy-MM-ddThh:mm'}}">
+            </div>
+            <span class="red-text" ng-show="rentForm.rentFrom.$invalid">Pick a date after 2017-03-02 09:21</span>-->
+            <div class="form-group">
+                <label for="rent-until">Rent For</label>
+                <div ng-show="vm.car.rentedUntil">
+                    <label ng-show>Rented until</label>
+                    <input ng-model="car.rentedUntil | date:'yyyy-MM-dd hh:mm a'" disabled />
+                </div>
+                <input type="time" class="form-control" name="rentFor" id="rent-for" ng-model="vm.car.rentFor" min="01:00:00" max="08:00:00" required>
+                <span class="red-text" ng-show="rentForm.rentFor.$error.min || rentForm.rentFor.$error.max">Pick a time between Between 1 and 8 hours</span>
+            </div>
+            <button type="submit" class="btn blue darken-4" ng-disabled="rentForm.rentFor.$error.min || rentForm.rentFor.$error.required || rentForm.rentFrom.$error.min" ng-click="vm.rentCar(vm.car,this)">Submit</button>
+        </form>
+    </div>
+</script>
+
