@@ -1,29 +1,53 @@
 ﻿(function () {
-    function CarsController($scope, ngDialog) {
-        var allCars = [
-            { id: 1, brand: 'Ford', model: 'Mustang1', color: 'red', rentedBy: 'firstName Hey', status:'Rented', rentedFrom: new Date(2017, 2, 3, 20, 21, 30), rentedUntil: new Date(2017, 2, 3, 21, 21, 30), imageUrl: 'http://st.motortrend.com/uploads/sites/10/2016/06/2017-ford-mustang-v6-coupe-angular-front.png?interpolation=lanczos-none&fit=around%7C317%3A211' },
-            { id: 2, brand: 'Ford', model: 'Mustang2', color: 'red', rentedBy: 'firstName Hey', status: 'Available', rentedFrom: new Date(2017, 2, 3, 19, 21, 30), rentedUntil: null, imageUrl: 'http://st.motortrend.com/uploads/sites/10/2016/06/2017-ford-mustang-v6-coupe-angular-front.png?interpolation=lanczos-none&fit=around%7C317%3A211' },
-            //{ id: 3, brand: 'Ford', model: 'Mustang3', color: 'red', rentedBy: 'firstName Hey', rentedUntil: new Date(2017, 2, 3, 21, 21, 30), imageUrl: 'http://st.motortrend.com/uploads/sites/10/2016/06/2017-ford-mustang-v6-coupe-angular-front.png?interpolation=lanczos-none&fit=around%7C317%3A211' },
-            //{ id: 4, brand: 'Ford', model: 'Mustang4', color: 'red', rentedBy: 'firstName Hey', rentedUntil: new Date(2017, 2, 3, 21, 21, 30), imageUrl: 'http://st.motortrend.com/uploads/sites/10/2016/06/2017-ford-mustang-v6-coupe-angular-front.png?interpolation=lanczos-none&fit=around%7C317%3A211' },
-            //{ id: 5, brand: 'Ford', model: 'Mustang5', color: 'red', rentedBy: 'firstName Hey', rentedUntil: new Date(2017, 2, 3, 21, 21, 30), imageUrl: 'http://st.motortrend.com/uploads/sites/10/2016/06/2017-ford-mustang-v6-coupe-angular-front.png?interpolation=lanczos-none&fit=around%7C317%3A211' },
-            //{ id: 6, brand: 'Ford', model: 'Mustang6', color: 'red', rentedBy: 'firstName Hey', rentedUntil: new Date(2017, 2, 3, 21, 21, 30), imageUrl: 'http://st.motortrend.com/uploads/sites/10/2016/06/2017-ford-mustang-v6-coupe-angular-front.png?interpolation=lanczos-none&fit=around%7C317%3A211' },
-            //{ id: 7, brand: 'Ford', model: 'Mustang7', color: 'red', rentedBy: null, rentedUntil: new Date(2017, 2, 3, 21, 21, 30), imageUrl: 'http://st.motortrend.com/uploads/sites/10/2016/06/2017-ford-mustang-v6-coupe-angular-front.png?interpolation=lanczos-none&fit=around%7C317%3A211' }
-        ];
-        function rentModal(car,cars) {
+    function CarsController($state, $scope, ngDialog, $cookies) {
+        var carService = new CarService($state, $cookies);
+        var cars = carService.getAll();
+        var page = 1;
+        var numberOfRecords = 1;
+        this.page = page;
+        this.filtered = cars.slice();
+        this.numberOfRecords = numberOfRecords;
+        this.cars = cars.slice();
+        var filteredCars = this.cars.slice((page - 1) * this.numberOfRecords, (page - 1) * this.numberOfRecords + this.numberOfRecords);
+        this.filteredCars = filteredCars;
+        var currentUser = $cookies.getObject('user');
+        this.currentUser = currentUser;
+        function pageChange(pageNumber) {
+            this.filteredCars = this.filtered.slice((pageNumber - 1) * this.numberOfRecords, (pageNumber - 1) * this.numberOfRecords + this.numberOfRecords);
+        }
+        function filter(brand, model) {
+            this.filtered = carService.getAll().filter(function (item) {
+                var itemBrand = brand ? brand : "";
+                var itemModel = model ? model : "";
+                return item.brand.toLowerCase().includes(itemBrand.toLowerCase()) && item.model.toLowerCase().includes(itemModel.toLowerCase());
+            });
+            this.filteredCars = this.filtered.slice((page - 1) * this.numberOfRecords, (page - 1) * this.numberOfRecords + this.numberOfRecords);
+        }
+        function rentModal(car, cars) {
             ngDialog.open({
                 template: 'templateId',
-                controller: ['car', 'cars', RentModal],
+                controller: ['car', 'cars', 'currentUser', RentModal],
                 controllerAs: 'vm',
                 scope: $scope,
                 resolve: {
                     car: function () { return car; },
-                    cars: function () { return cars; }
+                    cars: function () { return cars; },
+                    currentUser: function () { return currentUser; }
                 }
             });
         }
-
-        return { cars: allCars, rent: rentModal };
+        return {
+            cars: this.cars,
+            filteredCars: this.filteredCars,
+            rent: rentModal,
+            page: page,
+            pageChange: pageChange,
+            numberOfRecords: this.numberOfRecords,
+            filter: filter,
+            filtered: this.filtered,
+            currentUser: this.currentUser
+        };
     }
-    angular.module('carRental.cars', ['carRental.rentalHistory', 'carRental.renters'])
+    angular.module('carRental.cars', ['carRental.rentalHistory', 'carRental.renters', 'ngCookies', 'ui.bootstrap.tpls'])
         .controller('CarsController', CarsController);
 })();

@@ -1,0 +1,7 @@
+﻿<ul class="pagination">
+    <li ng-repeat="page in pages" ng-class="{active: page.active}">
+        <a href data-ng-show="page.text  == 'Previous'" ng-click="selectPage(page.number)" class="white-text stylish-color"> <i class="fa fa-chevron-left"></i> </a>
+        <a href data-ng-show="page.text >= 1 || page.text == 'First' || page.text == 'Last'" ng-click="selectPage(page.number)">{{page.text}}</a>
+        <a href data-ng-show="page.text == 'Next'" ng-click="selectPage(page.number)"> <i class="fa fa-chevron-right"></i> </a>
+    </li>
+</ul>

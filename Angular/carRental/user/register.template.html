@@ -7,46 +7,50 @@
             </div>
         </div>
         <div class="main-login main-center">
-            <form class="form-horizontal" method="post" action="#">
-
+            <form class="form-horizontal" method="post" action="#" name="registerForm">
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Name</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" ng-model="user.name" />
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" ng-minlength="5" ng-maxlength="50" ng-required="true" ng-model="user.name" />                       
                         </div>
                     </div>
+                    <div ng-show="registerForm.name.$error.required && registerForm.name.$dirty" class="red-text">Name is required</div>
+                    <div ng-show="registerForm.name.$dirty && (registerForm.name.$error.minlength || registerForm.name.$error.maxlength)" class="red-text">Name should be between 5 and 50 characters</div>
                 </div>
                 <div class="form-group">
                     <label for="email" class="cols-sm-2 control-label">Email</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" ng-model="user.email" />
-                        </div>
+                            <input type="email" class="form-control" name="email" id="email"placeholder="Enter your Email" ng-required="true" ng-model="user.email" />                        
+                        </div>                        
                     </div>
+                    <div ng-show="registerForm.email.$dirty && !registerForm.email.$valid" class="red-text">Email is not correct</div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="cols-sm-2 control-label">Password</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter your Password" ng-model="user.password" />
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter your Password" ng-minlength="6" ng-maxlength="20" ng-required="true" ng-model="user.password" />
                         </div>
                     </div>
+                    <div ng-show="registerForm.password.$dirty && registerForm.password.$error.required" class="red-text">Password is required</div>
+                    <div ng-show="registerForm.password.$dirty && (registerForm.password.$error.minlength || registerForm.password.$error.maxlength)" class="red-text">Password should be between 6 and 20 characters</div>
                 </div>
                 <div class="form-group">
                     <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Confirm your Password" ng-model="user.confirmPassword" />
-                        </div>
+                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Confirm your Password" required ng-model="user.confirmPassword" compare-to="user.password" />                                                     
+                         </div>
                     </div>
                 </div>
-                <div class="form-group ">
-                    <button type="button" class="btn btn-primary btn-lg login-button" ng-click="uc.register(user)">Register</button>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-lg login-button" ng-disabled="registerForm.$invalid" ng-click="uc.register(user)">Register</button>
                 </div>
                 <div class="login-register">
                     <a ui-sref="login">Login</a>

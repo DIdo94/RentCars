@@ -1,3 +1,53 @@
-﻿<div ng-repeat="renter in rc.renters">
-    {{renter.firstName}} {{renter.lastName}}
+﻿<div class="row">
+    <label class="col-xs-12"><input class="form-control" placeholder="Search by name " ng-model="search.lastName" ng-change="rc.filter(search.lastName)"></label>
 </div>
+<div class="row">
+    <div ng-repeat="renter in rc.filteredRenters | filter:search" class="col-xs-12 col-sm-6 col-md-3 car-wrapper">
+        <div class="card">
+            <!--Card image-->
+            <div class="view overlay hm-white-light">
+                <img ng-src="{{renter.imageUrl}}" class="img-fluid" alt="">
+                <a href="#">
+                    <div class="mask flex-center"></div>
+                </a>
+                <!--/.Card image-->
+                <!--Card content-->
+                <div class="card-block" style="text-align:center;">
+                    <!--Title-->
+                    <h4 class="card-title stylish-color white-text">{{renter.firstName}} {{renter.lastName}}</h4>
+                    <!--Text-->
+                    <button type="button" class="btn btn-lg stylish-color">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul class="custom" uib-pagination total-items="rc.filtered.length" 
+    ng-model="rc.page" 
+    items-per-page="rc.numberOfRecords" 
+    ng-change="rc.pageChange(rc.page)">
+</ul>
+<style>
+    .custom > li {
+        border-radius: 0;
+    }
+        .custom > li > a, .custom > li > span {
+            height: 45px;
+            font-size: 20px;
+            color: whitesmoke;
+            background-color: #4B515D;
+            border: 1px solid gray;
+            margin-left: 10px;
+        }
+
+            .custom > li > a:hover {
+                background-color: gray;
+                color: white;
+            }
+
+        .custom > li.active > a, .custom > li.active > a:hover {
+            background-color: grey;
+        }
+</style>

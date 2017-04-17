@@ -1,51 +1,30 @@
 ﻿(function () {
     angular.element(document).ready(function () {
-        angular.bootstrap(document, ['ngCookies','carRental']);
+        angular.bootstrap(document, ['ngCookies', 'carRental']);
     });
 
-    function MainController($scope,$cookies) {
-        $scope.logout = function () {
-            if ($cookies.get('user')) {
-                $cookies.remove('user');
-            }
-        }
-
-        $scope.isLogged = $cookies.get('user');
-    }
-
-    angular.module('carRental', ['carRental.users', 'carRental.cars', 'carRental.renters', 'carRental.rentalHistory', 'carRental.carDetails', 'ui.router', 'ngDialog','ngCookies'])
-        .controller('main', function ($scope, $cookies) {
+    angular.module('carRental', ['carRental.users', 'carRental.cars', 'carRental.renters', 'carRental.rentalHistory', 'carRental.carDetails', 'ui.bootstrap', 'ui.router', 'ngDialog', 'ngCookies'])
+        .controller('main', function ($scope, $cookies, $state) {
             $scope.logout = function () {
                 var user = $cookies.get('user');
                 if ($cookies.get('user')) {
                     $cookies.remove('user');
+                    $state.go('login');
+                    $scope.isLogged = false;
                 }
-
-                location.reload();
             }
 
-            if ($cookies.get('user')) {
+            if ($cookies.getObject('user')) {
                 $scope.isLogged = true;
             } else {
                 $scope.isLogged = false;
-            }         
+            }
         })
-        //.run(function ($rootScope, $urlRouter, $cookies) {
-        //    $rootScope.$on('$locationChangeSuccess', function(evt) {
-        //        // Halt state change from even starting
-        //        evt.preventDefault();
-        //        // Perform custom logic
-        //        if ($cookies.get('user')) {
-        //            $rootScope.isLogged = true;
-        //        } else {
-        //            $rootScope.isLogged = false;
-        //        }
-
-        //        $urlRouter.sync();
-        //    })
-        //})
-        .config(($stateProvider) => {
+        .config(($stateProvider, $urlRouterProvider, $locationProvider) => {
             $stateProvider
+                .state('mainPage', {
+                    url: '/'
+                })
             .state('renters', {
                 url: '/renters',
                 templateUrl: 'carRental/renter/renter.template.html',
@@ -66,15 +45,15 @@
                 templateUrl: 'carRental/rentalHistory/rentalHistory.template.html',
                 controller: 'RentalHistoryController as rhc'
             })
-            .state('register',{
+            .state('register', {
                 url: '/register',
                 templateUrl: 'carRental/user/register.template.html',
                 controller: 'UserController as uc'
             })
-            .state('login',{
+            .state('login', {
                 url: '/login',
                 templateUrl: 'carRental/user/login.template.html',
                 controller: 'UserController as uc'
             });
         });
-        })();
+})();
