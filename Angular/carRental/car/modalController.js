@@ -1,8 +1,21 @@
 ﻿function RentModal(car, cars, currentUser) {
     var vm = this;
-    vm.car = car;
-    vm.car.rentFor = '';// moment("100", "hmm").format("HH:mm");
     vm.cars = cars;
+    if (car) {
+        vm.car = car;
+    } else {
+        vm.car = {};
+    }
+    vm.addCar = function (scope) {
+        cars.push(vm.car);
+        scope.closeThisDialog();
+    }
+
+    vm.loadPicture = function (form) {
+        if (form.car.image.$valid) {
+
+        }
+    }
     vm.rentCar = function (carToRent, scope) {
         var dbCar = vm.cars.find(function (item) {
             return item.id === carToRent.id;

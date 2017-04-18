@@ -1,9 +1,9 @@
 ﻿function UserService($state, $cookies) {
     var users = [
-        { id: 1, name: 'Toshp', email: 'dasd@gmail.com', password: '123456', role: 'Admin' },
-        { id: 2, name: 'tosho', email: 'das@gmail.com', password: '123456', role: 'User' }
+        { id: 1, name: 'Toshp', email: 'admin@gmail.com', password: '123456', role: 'Admin' },
+        { id: 2, name: 'tosho', email: 'user@gmail.com', password: '123456', role: 'User' }
     ];
-    this.users = users;
+   // this.users = users;
     this.register = function (user) {
         var userWithEmail = users.find(function (singleUser) {
             return singleUser.email == user.email;
@@ -22,9 +22,8 @@
             return singleUser.email == user.email && singleUser.password == user.password;
         });
         if (!userWithEmail) {
-            alert('User does not exist');
+            alert('Incorrect email or password');
         } else {
-            debugger;
             $cookies.putObject('user', { name: userWithEmail.name, email: userWithEmail.email, role: userWithEmail.role });
             var some = $cookies.getObject('user');
             $state.go('cars');

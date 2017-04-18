@@ -1,10 +1,13 @@
-﻿<div style="border-radius:3px; background-color:lightgray;padding:5px;margin-bottom: 5px">
+﻿<div class="stylish-color" style="border-radius:3px;padding:15px; padding-bottom: 0; margin-bottom: 25px">
     <div class="row">
         <label class="col-xs-12"><input style="background-color:white" class="form-control" placeholder="Search brand" ng-model="search.brand" ng-change="cc.filter(search.brand, search.model)"></label>
         <label class="col-xs-12"><input style="background-color:white" class="form-control" placeholder="Search model" ng-model="search.model" ng-change="cc.filter(search.brand, search.model)"></label>
-        <div class="col-xs-12" ng-hide="cc.currentUser.role === 'User'"><a class="btn stylish-color">Add</a></div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12" ng-hide="cc.currentUser.role === 'User'"><a class="btn stylish-color" ng-click="cc.add(cc.cars)">Add</a></div>
+</div>
+{{cc.filteredCars.length}}
 <div class="row">
     <!--Card-->
     <div ng-repeat="car in cc.filteredCars | filter:search" class="col-xs-12 col-sm-6 col-md-3 car-wrapper">
@@ -17,7 +20,7 @@
                 </a>
                 <!--/.Card image-->
                 <!--Card content-->
-                <div class="card-block" style="text-align:center;">
+                <div class="card-block">
                     <!--Title-->
                     <h4 class="card-title stylish-color white-text">{{car.brand}} {{car.model}}</h4>
                     <!--Text-->
@@ -37,35 +40,7 @@
         </div>
     </div>
 </div>
-<ul class="custom" uib-pagination total-items="cc.filtered.length" ng-model="cc.page" items-per-page="cc.numberOfRecords" ng-change="cc.pageChange(cc.page)"></ul>
-<script type="text/ng-template" id="templateId">
-    <h3>{{vm.car.brand}} {{vm.car.model}}</h3>
-    <div>
-        <!--ng-submit="vm.rentCar(vm.car)"-->
-        <form name="rentForm">
-            <!--<div class="form-group">
-                <label for="renter">Renter</label>
-                <input type="text" class="form-control" id="renter" placeholder="Renter">
-            </div>-->
-            <!--<div class="form-group">
-                <label for="renter">Rent From</label>
-                <input type="datetime-local" class="form-control" id="renter-from" name="rentFrom" placeholder="Rent From" ng-model="vm.car.rentedUntil" min="2017-03-03T09:00" value="{{vm.car.rentedUntil | date:'yyyy-MM-ddThh:mm'}}">
-            </div>
-            <span class="red-text" ng-show="rentForm.rentFrom.$invalid">Pick a date after 2017-03-02 09:21</span>-->
-            
-
-            <div class="form-group">
-            <div class="form-group">
-                
-
-                <label for="rent-until">Rent For</label>
-                <input type="time" class="form-control" name="rentFor" id="rent-for" ng-model="vm.car.rentFor" min="01:00:00" max="08:00:00" required>
-                <span class="red-text" ng-show="rentForm.rentFor.$error.min || rentForm.rentFor.$error.max">Pick a time between Between 1 and 8 hours</span>
-            </div>
-            <button type="submit" class="btn blue darken-4" ng-disabled="rentForm.$invalid" ng-click="vm.rentCar(vm.car,this)">Submit</button>
-        </form>
-    </div>
-</script>
+<ul class="custom" uib-pagination total-items="cc.cars.length" ng-model="cc.page" items-per-page="cc.numberOfRecords" ng-change="cc.pageChange(cc.page)"></ul>
 <style>
     .custom > li {
         border-radius: 0;

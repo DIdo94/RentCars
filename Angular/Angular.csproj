@@ -68,6 +68,7 @@
   <ItemGroup>
     <Content Include="carRental\carDetails\carDetails.controller.js" />
     <Content Include="carRental\carDetails\carDetails.template.html" />
+    <Content Include="carRental\car\addCarTemplate.html" />
     <Content Include="carRental\car\modalController.js" />
     <Content Include="carRental\car\rentModal.html" />
     <Content Include="carRental\shared\services\carService.js" />

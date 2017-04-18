@@ -10,11 +10,15 @@ body {
     height: 90%;
 }
 
+.card-block {
+    text-align: center;
+}
+
 .card-title {
     background-color: lightgray;
     padding: 5px;
 }
 
-.card{
-    margin-bottom: 60px;
+.card {
+    margin-bottom: 30px;
 }
