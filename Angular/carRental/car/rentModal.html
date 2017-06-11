@@ -3,9 +3,25 @@
     <form name="rentForm">
         <div class="form-group">
             <label for="rent-until">Rent For</label>
-            <input type="time" class="form-control" name="rentFor" id="rent-for" ng-model="vm.car.rentFor" min="01:00:00" max="08:00:00" required>
+            <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
+                    <div class="input-group">
+                        <input type="text" 
+                               class="form-control" 
+                               required disabled datetime="yyyy-MM-dd HH:mm:ss" 
+                               data-ng-model="vm.car.rentedUntil">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-on-set-time="vm.onTimeSet(newDate, oldDate)" 
+                                    data-ng-model="vm.car.rentedUntil" 
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2'}"
+                                    data-before-render="vm.startDateBeforeRender($dates,$view )" />
+                </ul>
+            </div>         
             <span class="red-text" ng-show="rentForm.rentFor.$error.min || rentForm.rentFor.$error.max">Pick a time between Between 1 and 8 hours</span>
         </div>
-        <button type="submit" class="btn blue darken-4" ng-disabled="rentForm.$invalid" ng-click="vm.rentCar(vm.car,this)">Submit</button>
+        <button type="submit" class="btn blue darken-4" ng-disabled="rentForm.$invalid" ng-click="vm.rentCar(this)">Submit</button>
     </form>
 </div>

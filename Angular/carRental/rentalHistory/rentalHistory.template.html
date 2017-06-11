@@ -1,3 +1,65 @@
-﻿<div ng-repeat="rent in rhc.rh">
-    {{rent.rentedBy}} {{rent.rentedUntil | date:'short'}}
-</div>
+﻿<table st-table="rhc.rentals" class="table table-striped">
+    <thead>
+        <tr>
+            <th st-sort="model">Model</th>
+            <th st-sort="brand">Brand</th>
+            <th st-sort="rentedFrom">Rented From</th>
+            <th st-sort="rentedUntil">Rented Until</th>
+        </tr>
+        <tr>
+            <th>
+                <input st-search="model" placeholder="Search for model" class="input-sm form-control" type="search" />
+            </th>
+            <th>
+                <input st-search="brand" placeholder="Search for brand" class="input-sm form-control" type="search" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="rent in rhc.rentals">
+            <td>{{rent.model}}</td>
+            <td>{{rent.brand}}</td>
+            <td>{{rent.rentedFrom | date:'short'}}</td>
+            <td>{{rent.rentedUntil | date:'short'}}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-center">
+                <div class="custom" st-pagination="" st-items-by-page="1" st-displayed-pages="3"></div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<style>
+      .st-sort-ascent:before{
+    content: '\25B2';
+  }
+
+  .st-sort-descent:before{
+    content: '\25BC';
+  }
+    .custom > li {
+        border-radius: 0;
+    }
+
+        .custom .pagination li > a, .custom .pagination > li > span {
+            height: 45px;
+            font-size: 20px;
+            color: whitesmoke;
+            background-color: #4B515D;
+            border: 1px solid gray;
+            margin-left: 10px;
+        }
+
+            .custom .pagination > li > a:hover {
+                background-color: gray;
+                color: white;
+            }
+
+        .custom .pagination > li.active > a, .custom .pagination > li.active > a:hover {
+            background-color: grey;
+        }
+</style>
+
+

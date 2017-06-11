@@ -12,35 +12,38 @@
             { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
             { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
         ];
-
+        var vm = this;
         var page = 1;
         var numberOfRecords = 1;
-        this.page = page;
-        this.filtered = renters.slice();
-        this.numberOfRecords = numberOfRecords;
-        this.renters = renters.slice();
-        var filteredRenters = this.renters.slice((page - 1) * this.numberOfRecords, (page - 1) * this.numberOfRecords + this.numberOfRecords);
-        this.filteredRenters = filteredRenters;
+        vm.page = page;
+        vm.filtered = renters.slice();
+        vm.numberOfRecords = numberOfRecords;
+        vm.renters = renters.slice();
+        var filteredRenters = vm.renters.slice((page - 1) * vm.numberOfRecords, (page - 1) * vm.numberOfRecords + vm.numberOfRecords);
+        vm.filteredRenters = filteredRenters;
 
         function pageChange(pageNumber) {
-            this.filteredRenters = this.filtered.slice((pageNumber - 1) * this.numberOfRecords, (pageNumber - 1) * this.numberOfRecords + this.numberOfRecords);
+            this.page = pageNumber;
+            var firstRecords = (pageNumber - 1) * vm.numberOfRecords;
+            angular.copy(vm.filtered.slice(firstRecords, firstRecords + vm.numberOfRecords),vm.filteredRenters);
         }
         function filter(name) {
-            this.filtered = renters.filter(function (item) {
+            vm.page = 1;
+            vm.filtered = renters.filter(function (item) {
                 var itemName = name ? name : '';
-                return item.lastName.toLowerCase().includes(itemName);
+                var fullName = item.firstName + ' ' + item.lastName;
+                return fullName.toLowerCase().includes(itemName.toLowerCase());
             });
 
-            this.filteredRenters = this.filtered.slice((page - 1) * this.numberOfRecords, (page - 1) * this.numberOfRecords + this.numberOfRecords);
+            angular.copy(vm.filtered.slice((page - 1) * vm.numberOfRecords, (page - 1) * vm.numberOfRecords + vm.numberOfRecords),vm.filteredRenters);
         }
-        var controller = this;
         return {
-            renters: this.renters,
-            filtered: this.filtered,
-            filteredRenters: this.filteredRenters,
-            page: this.page,
+            renters: vm.renters,
+            filtered: vm.filtered,
+            filteredRenters: vm.filteredRenters,
+            page: vm.page,
             pageChange: pageChange,
-            numberOfRecords: this.numberOfRecords,
+            numberOfRecords: vm.numberOfRecords,
             filter: filter
         };
     }

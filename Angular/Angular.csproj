@@ -69,7 +69,9 @@
     <Content Include="carRental\carDetails\carDetails.controller.js" />
     <Content Include="carRental\carDetails\carDetails.template.html" />
     <Content Include="carRental\car\addCarTemplate.html" />
+    <Content Include="carRental\car\editCarTemplate.html" />
     <Content Include="carRental\car\modalController.js" />
+    <Content Include="carRental\car\removeCarTemplate.html" />
     <Content Include="carRental\car\rentModal.html" />
     <Content Include="carRental\shared\services\carService.js" />
     <Content Include="carRental\shared\templates\paginationTemplate.html" />
@@ -106,6 +108,7 @@
     <Content Include="carRental\renter\renter.controller.js" />
     <Content Include="carRental\renter\renter.template.html" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="styles\customPaging.css" />
     <Content Include="styles\main.css" />
     <Content Include="styles\register.css" />
     <Content Include="Web.config" />

@@ -14,7 +14,7 @@
             users.push(user);
             $cookies.putObject('user', { name: user.name, email: user.email, role: user.role });
             $state.go('cars');
-            location.reload();
+            //location.reload();
         }
     }
     this.login = function (user) {
@@ -27,7 +27,7 @@
             $cookies.putObject('user', { name: userWithEmail.name, email: userWithEmail.email, role: userWithEmail.role });
             var some = $cookies.getObject('user');
             $state.go('cars');
-            location.reload();
+            //location.reload();
         }
     }
     return this;

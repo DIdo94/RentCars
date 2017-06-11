@@ -1,17 +1,17 @@
-﻿<h1>Add car</h1>
+﻿<h1>Edit car</h1>
 <div>
-    <form name="addCarForm">
+    <form name="editCarForm">
         <div class="form-group">
             <label for="brand">Brand</label>
             <input type="text" class="form-control" ng-minlength="3" ng-maxlength="30" name="brand" id="brand" required ng-model="vm.car.brand" placeholder="Brand">
-            <span class="red-text" ng-show="addCarForm.brand.$error.required && addCarForm.brand.$dirty">Brand is required</span>
-            <span class="red-text" ng-show="addCarForm.brand.$error.minlength || addCarForm.brand.$error.maxlength">Brand must be between 3 and 30 characters</span>
+            <span class="red-text" ng-show="editCarForm.brand.$error.required && editCarForm.brand.$dirty">Brand is required</span>
+            <span class="red-text" ng-show="editCarForm.brand.$error.minlength || editCarForm.brand.$error.maxlength">Brand must be between 3 and 30 characters</span>
         </div>
         <div class="form-group">
             <label for="model">Model</label>
             <input type="text" class="form-control" name="model" ng-minlength="3" ng-maxlength="30" required id="model" ng-model="vm.car.model" placeholder="Model">
-            <span class="red-text" ng-show="addCarForm.model.$error.required && addCarForm.model.$dirty">Brand is required</span>
-            <span class="red-text" ng-show="addCarForm.model.$error.minlength || addCarForm.model.$error.maxlength">Brand must be between 3 and 30 characters</span>
+            <span class="red-text" ng-show="editCarForm.model.$error.required && editCarForm.model.$dirty">Brand is required</span>
+            <span class="red-text" ng-show="editCarForm.model.$error.minlength || editCarForm.model.$error.maxlength">Brand must be between 3 and 30 characters</span>
         </div>
         <div class="form-group">
             <label for="color">Color</label>
@@ -24,6 +24,7 @@
         <div class="form-group">
             <img width="300" height="300" ng-src="{{vm.car.imageUrl}}" />
         </div>
-        <button type="submit" ng-disabled="addCarForm.$invalid" ng-click="vm.addCar(this)" class="btn btn-default">Submit</button>
+        <button type="submit" ng-disabled="editCarForm.$invalid || editCarForm.$pristine" ng-click="vm.editCar(this)" class="btn btn-default">Submit</button>
     </form>
 </div>
+
