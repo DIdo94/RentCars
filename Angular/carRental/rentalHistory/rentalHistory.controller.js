@@ -1,16 +1,17 @@
 ﻿(function () {
-    function RentalHistoryController($scope, user) {
-        var rh = [
-            { id: 1, userId: 1, rentedBy: 'Sasho1', carId: 1, brand: "Ford", model: "Mustang2", rentedFrom: new Date('10-10-2010'), rentedUntil: new Date('10-10-2015') },
-            { id: 2, userId: 1, rentedBy: 'Sasho', carId: 1, brand: "Ford", model: "Mustang1", rentedFrom: new Date('10-10-2011'), rentedUntil: new Date('10-10-2010') },
-            { id: 2, userId: 1, rentedBy: 'Sasho', carId: 1, brand: "Ford", model: "Mustang1", rentedFrom: new Date('10-10-2011'), rentedUntil: new Date('10-10-2010') },
+    function RentalHistoryController($scope, user, data) {
+        var rh = [];
+        //    { id: 1, userId: 1, rentedBy: 'Sasho1', carId: 1, brand: "Ford", model: "Mustang2", rentedFrom: new Date('10-10-2010'), rentedUntil: new Date('10-10-2015') },
+        //    { id: 2, userId: 1, rentedBy: 'Sasho', carId: 1, brand: "Ford", model: "Mustang1", rentedFrom: new Date('10-10-2011'), rentedUntil: new Date('10-10-2010') },
+        //    { id: 2, userId: 1, rentedBy: 'Sasho', carId: 1, brand: "Ford", model: "Mustang1", rentedFrom: new Date('10-10-2011'), rentedUntil: new Date('10-10-2010') },
 
-        ];
+        //];
+        rh = data;
         controller = this;
-        var rentals = rh.filter(function (item) {
-            return item.userId == parseInt(user.id);
-        });
-        controller.rentals = rentals;
+        //var rentals = rh.filter(function (item) {
+        //    return item.userId == parseInt(user.id);
+        //});
+        controller.rentals = rh;
         //var page = 1;
         //var numberOfRecords = 2;
         //controller.page = page;
@@ -42,5 +43,5 @@
         return controller;
     }
     angular.module('carRental.rentalHistory', ['carRental.cars', 'data-table', 'smart-table'])
-        .controller('RentalHistoryController', ['$scope', '$stateParams', RentalHistoryController]);
+        .controller('RentalHistoryController', ['$scope', '$stateParams', 'data', RentalHistoryController]);
 })();

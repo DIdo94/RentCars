@@ -9,15 +9,49 @@
         <div class="main-login main-center">
             <form class="form-horizontal" method="post" action="#" name="registerForm">
                 <div class="form-group">
-                    <label for="name" class="cols-sm-2 control-label">Name</label>
+                    <label for="firstName" class="cols-sm-2 control-label">First Name</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" ng-minlength="5" ng-maxlength="50" ng-required="true" ng-model="user.name" />                       
+                            <input 
+                                   type="text" 
+                                   class="form-control" 
+                                   name="firstName" 
+                                   id="firstName" 
+                                   placeholder="Enter your first name" 
+                                   ng-minlength="5" 
+                                   ng-maxlength="50" 
+                                   ng-required="true" 
+                                   ng-model="user.firstName" />                       
                         </div>
                     </div>
-                    <div ng-show="registerForm.name.$error.required && registerForm.name.$dirty" class="red-text">Name is required</div>
-                    <div ng-show="registerForm.name.$dirty && (registerForm.name.$error.minlength || registerForm.name.$error.maxlength)" class="red-text">Name should be between 5 and 50 characters</div>
+                    <div 
+                         ng-show="registerForm.firstName.$error.required && registerForm.firstName.$dirty" 
+                         class="red-text">First name is required</div>
+                    <div 
+                         ng-show="registerForm.firstName.$dirty && (registerForm.firstName.$error.minlength || registerForm.firstName.$error.maxlength)" 
+                         class="red-text">First name should be between 5 and 50 characters</div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName" class="cols-sm-2 control-label">First Name</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text"
+                                   class="form-control"
+                                   name="lastName"
+                                   id="lastName"
+                                   placeholder="Enter your last name"
+                                   ng-minlength="5"
+                                   ng-maxlength="50"
+                                   ng-required="true"
+                                   ng-model="user.lastName" />
+                        </div>
+                    </div>
+                    <div ng-show="registerForm.lastName.$error.required && registerForm.lastName.$dirty"
+                         class="red-text">Last name is required</div>
+                    <div ng-show="registerForm.lastName.$dirty && (registerForm.lastName.$error.minlength || registerForm.lastName.$error.maxlength)"
+                         class="red-text">Last name should be between 5 and 50 characters</div>
                 </div>
                 <div class="form-group">
                     <label for="email" class="cols-sm-2 control-label">Email</label>
@@ -48,6 +82,24 @@
                             <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Confirm your Password" required ng-model="user.confirmPassword" compare-to="user.password" />                                                     
                          </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="imageUrl" class="cols-sm-2 control-label">Image url</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="url" 
+                                   class="form-control" 
+                                   name="imageUrl" 
+                                   id="imageUrl" 
+                                   placeholder="Enter a valid image url" 
+                                   required 
+                                   ng-model="user.imageUrl"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <img width="300" height="300" ng-src="{{user.imageUrl}}" />
                 </div>
                 <div class="form-group">
                     <button type="button" class="btn stylish-color btn-lg login-button" ng-disabled="registerForm.$invalid" ng-click="uc.register(user)">Register</button>

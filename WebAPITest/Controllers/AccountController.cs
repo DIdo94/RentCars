@@ -6,9 +6,8 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
+using AspNet.Identity.MongoDB;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
@@ -87,14 +86,14 @@ namespace WebAPITest.Controllers
 
             List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
 
-            foreach (IdentityUserLogin linkedAccount in user.Logins)
-            {
-                logins.Add(new UserLoginInfoViewModel
-                {
-                    LoginProvider = linkedAccount.LoginProvider,
-                    ProviderKey = linkedAccount.ProviderKey
-                });
-            }
+            //foreach (IdentityUserLogin linkedAccount in user.Logins)
+            //{
+            //    logins.Add(new UserLoginInfoViewModel
+            //    {
+            //        LoginProvider = linkedAccount.LoginProvider,
+            //        ProviderKey = linkedAccount.ProviderKey
+            //    });
+            //}
 
             if (user.PasswordHash != null)
             {
@@ -125,7 +124,7 @@ namespace WebAPITest.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -258,9 +257,9 @@ namespace WebAPITest.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -328,7 +327,15 @@ namespace WebAPITest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser()
+            {
+                Email = model.Email,
+                UserName = model.Email,
+                //DateOfBirth = model.DateOfBirth,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                ImageUrl = model.ImageUrl
+            };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
@@ -368,7 +375,7 @@ namespace WebAPITest.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }

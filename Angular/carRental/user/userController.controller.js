@@ -1,8 +1,8 @@
 ﻿(function () {
-    function UserController($scope, $state, $cookies, Notification) {
-        var userService = new UserService($state, $cookies);
+    function UserController($scope, $state, $cookies, Notification, UserService) {
+        var controller = this;
         function isLogged() {
-            if ($cookies.getObject('user')) {
+            if ($cookies.getObject('token')) {
                 $scope.isLogged = true;
             } else {
                 $scope.isLogged = false;
@@ -10,29 +10,40 @@
         }
 
         isLogged();
-        $scope.isLogged = isLogged;
-       
-        this.register = function (user) {
-            userService.register(user);
-            Notification.success('Successfully registered');
-            isLogged();
+        //$scope.isLogged = isLogged;
+
+        controller.register = function (user) {
+            UserService.register(user).success(function () {
+                Notification.success('Successfully registered');
+                controller.login(user);
+                isLogged();
+            }).error(function (error) {
+                Notification.error('Unuccessfully registered');
+            });
         }
-        this.login = function (user) {
-            userService.login(user);
-            isLogged();
-            Notification.success('Successfully logged in');
+
+        controller.login = function (user) {
+            UserService.login(user).success(function (data) {
+                Notification.success('Successfully logged in');
+                $cookies.putObject('token', data.access_token);
+            }).error(function (error) {
+                Notification.error('Unuccessfully logged in');
+            });
+            // isLogged();          
         }
 
         $scope.logout = function () {
             var user = $cookies.get('user');
-            if ($cookies.get('user')) {
-                $cookies.remove('user');
+            debugger;
+            if ($cookies.get('token')) {
+                $cookies.remove('token');
                 $state.go('login');
                 $scope.isLogged = false;
                 Notification.success('Successfully logged out');
             }
         }
-        return this;
+
+        return controller;
     }
 
     var compareTo = function () {
@@ -43,7 +54,7 @@
             },
             link: function (scope, element, attributes, ngModel) {
                 ngModel.$validators.compareTo = function (modelValue) {
-                    return modelValue == scope.otherModelValue;
+                    return modelValue === scope.otherModelValue;
                 };
 
                 scope.$watch("otherModelValue", function () {
@@ -53,7 +64,7 @@
         };
     };
 
-   
-    angular.module('carRental.users', ['ui.router', 'ngCookies']).controller('UserController', UserController)
+
+    angular.module('carRental.users', ['ui.router', 'ngCookies']).controller('UserController', ['$scope', '$state', '$cookies', 'Notification', 'UserService', UserController])
         .directive("compareTo", compareTo);
 })();

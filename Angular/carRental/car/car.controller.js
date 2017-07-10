@@ -1,20 +1,23 @@
 ﻿(function () {
-    function CarsController($state, $scope, ngDialog, $cookies) {
+    function CarsController($state, $scope, ngDialog, $cookies, data, CarService, Notification) {
         var controller = this;
-        var carService = new CarService($state, $cookies);
-        var cars = carService.getAll();
+        controller.carService = CarService;
+        var cars = [];
+        var itemBrand = '';
+        var itemModel = '';
+        controller.cars = [];
         var page = 1;
         var numberOfRecords = 1;
         controller.page = page;
         controller.numberOfRecords = numberOfRecords;
+        cars = data;
         controller.cars = cars.slice();
         var firstRecords = (controller.page - 1) * controller.numberOfRecords;
         var filteredCars = controller.cars.slice(firstRecords, (page - 1) * controller.numberOfRecords + controller.numberOfRecords);
         controller.filteredCars = filteredCars;
         var currentUser = $cookies.getObject('user');
-        var itemBrand = '';
-        var itemModel = '';
         controller.currentUser = currentUser;
+
         function pageChange(pageNumber) {
             this.page = pageNumber;
             firstRecords = (this.page - 1) * controller.numberOfRecords;
@@ -27,7 +30,7 @@
             angular.copy(cars.filter(function (item) {
                 itemBrand = brand ? brand : '';
                 itemModel = model ? model : '';
-                return item.brand.toLowerCase().includes(itemBrand.toLowerCase()) && item.model.toLowerCase().includes(itemModel.toLowerCase());
+                return item.brand.name.toLowerCase().includes(itemBrand.toLowerCase()) && item.model.name.toLowerCase().includes(itemModel.toLocaleLowerCase());
             }), controller.cars);
             firstRecords = (this.page - 1) * controller.numberOfRecords;
             angular.copy(controller.cars.slice(firstRecords, firstRecords + controller.numberOfRecords), controller.filteredCars);
@@ -46,10 +49,10 @@
             return carRentDate > new Date().getTime();
         }
 
-        function rentModal(car, dbCars) {
+        function rentModal(car) {
             ngDialog.open({
                 template: 'carRental/car/rentModal.html',
-                controller: ['car', 'dbCars', 'currentUser', RentModal],
+                controller: ['car', 'dbCars', 'currentUser', 'CarService', 'Notification', RentModal],
                 className: 'ngdialog-theme-default',
                 controllerAs: 'vm',
                 showClose: false,
@@ -62,7 +65,9 @@
                         return dbCar;
                     },
                     dbCars: function () { return controller.cars; },
-                    currentUser: function () { return controller.currentUser; }
+                    currentUser: function () { return controller.currentUser; },
+                    CarService: function () { return controller.carService; },
+                    notification: function () { return Notification }
                 }
             });
         }
@@ -70,7 +75,7 @@
         function addModal(controllerCars) {
             ngDialog.open({
                 template: 'carRental/car/addCarTemplate.html',
-                controller: ['car', 'cars', 'currentUser', RentModal],
+                controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', RentModal],
                 className: 'ngdialog-theme-default',
                 controllerAs: 'vm',
                 showClose: false,
@@ -78,7 +83,9 @@
                 resolve: {
                     car: function () { return null; },
                     cars: function () { return cars; },
-                    currentUser: function () { return currentUser; }
+                    currentUser: function () { return currentUser; },
+                    CarService: function () { return controller.carService; },
+                    notification: function () { return Notification }
                 }
             });
         }
@@ -86,7 +93,25 @@
         function editModal(car) {
             ngDialog.open({
                 template: 'carRental/car/editCarTemplate.html',
-                controller: ['car', 'cars', 'currentUser', RentModal],
+                controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', RentModal],
+                className: 'ngdialog-theme-default',
+                controllerAs: 'vm',
+                showClose: false,
+                scope: $scope,
+                resolve: {
+                    car: function () { return car; },
+                    cars: function () { return cars; },
+                    currentUser: function () { return currentUser; },
+                    CarService: function () { return controller.carService; },
+                    notification: function () { return Notification }
+                }
+            });
+        }
+
+        function deleteModal(car) {
+            ngDialog.open({
+                template: 'carRental/car/removeCarTemplate.html',
+                controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', RentModal],
                 className: 'ngdialog-theme-default',
                 controllerAs: 'vm',
                 showClose: false,
@@ -99,25 +124,10 @@
             });
         }
 
-        function deleteModal(car) {
-            ngDialog.open({
-                template: 'carRental/car/removeCarTemplate.html',
-                controller: ['car', 'cars', 'currentUser', RentModal],
-                className: 'ngdialog-theme-default',
-                controllerAs: 'vm',
-                showClose: false,
-                scope: $scope,
-                resolve: {
-                    car: function () { return car; },
-                    cars: function () { return cars; },
-                    currentUser: function () { return currentUser; }
-                }
-            });
-        }
         return {
             cars: controller.cars,
             filteredCars: controller.filteredCars,
-            isAvailable : isAvailable,
+            isAvailable: isAvailable,
             rent: rentModal,
             add: addModal,
             editCar: editModal,

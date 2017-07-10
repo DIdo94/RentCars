@@ -1,8 +1,8 @@
-﻿<table st-table="rhc.rentals" class="table table-striped">
-    <thead>
-        <tr>
-            <th st-sort="model">Model</th>
+﻿<table st-table="rhc.rentals" class="table">
+    <thead >
+        <tr style="background-color: lightgray">
             <th st-sort="brand">Brand</th>
+            <th st-sort="model">Model</th>
             <th st-sort="rentedFrom">Rented From</th>
             <th st-sort="rentedUntil">Rented Until</th>
         </tr>
@@ -13,14 +13,20 @@
             <th>
                 <input st-search="brand" placeholder="Search for brand" class="input-sm form-control" type="search" />
             </th>
+            <th>
+                <input st-search="model" placeholder="Search for model" class="input-sm form-control" type="search" />
+            </th>
+            <th>
+                <input st-search="brand" placeholder="Search for brand" class="input-sm form-control" type="search" />
+            </th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="rent in rhc.rentals">
-            <td>{{rent.model}}</td>
-            <td>{{rent.brand}}</td>
-            <td>{{rent.rentedFrom | date:'short'}}</td>
-            <td>{{rent.rentedUntil | date:'short'}}</td>
+            <td>{{rent.brand.name}}</td>
+            <td>{{rent.model.name}}</td>
+            <td>{{rent.rentedFrom | date:"MM/dd/yyyy h:mm "}}</td>
+            <td>{{rent.rentedUntil | date:"MM/dd/yyyy h:mm "}}</td>
         </tr>
     </tbody>
     <tfoot>
@@ -32,34 +38,35 @@
     </tfoot>
 </table>
 <style>
-      .st-sort-ascent:before{
-    content: '\25B2';
-  }
+    .st-sort-ascent:before {
+        content: '\25B2';
+    }
 
-  .st-sort-descent:before{
-    content: '\25BC';
-  }
+    .st-sort-descent:before {
+        content: '\25BC';
+    }
+
     .custom > li {
         border-radius: 0;
     }
 
-        .custom .pagination li > a, .custom .pagination > li > span {
-            height: 45px;
-            font-size: 20px;
-            color: whitesmoke;
-            background-color: #4B515D;
-            border: 1px solid gray;
-            margin-left: 10px;
-        }
+    .custom .pagination li > a, .custom .pagination > li > span {
+        height: 45px;
+        font-size: 20px;
+        color: whitesmoke;
+        background-color: #4B515D;
+        border: 1px solid gray;
+        margin-left: 10px;
+    }
 
-            .custom .pagination > li > a:hover {
-                background-color: gray;
-                color: white;
-            }
+    .custom .pagination > li > a:hover {
+        background-color: gray;
+        color: white;
+    }
 
-        .custom .pagination > li.active > a, .custom .pagination > li.active > a:hover {
-            background-color: grey;
-        }
+    .custom .pagination > li.active > a, .custom .pagination > li.active > a:hover {
+        background-color: grey;
+    }
 </style>
 
 

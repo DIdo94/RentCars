@@ -1,24 +1,24 @@
 ﻿(function () {
-    function RenterController() {
-        var renters = [
-            { id: 1, firstName: 'firstName', lastName: 'Spoer', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 2, firstName: 'second', lastName: 'Lvhe', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 3, firstName: 'some', lastName: 'Dea', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 4, firstName: 'seco', lastName: 'Soae', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 5, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-            { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        ];
+    function RenterController(data, UserService) {
+        //var renters = [
+        //    { id: 1, firstName: 'firstName', lastName: 'Spoer', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 2, firstName: 'second', lastName: 'Lvhe', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 3, firstName: 'some', lastName: 'Dea', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 4, firstName: 'seco', lastName: 'Soae', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 5, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
+        //];
         var vm = this;
         var page = 1;
         var numberOfRecords = 1;
         vm.page = page;
-        vm.filtered = renters.slice();
+        vm.filtered = data;
         vm.numberOfRecords = numberOfRecords;
-        vm.renters = renters.slice();
+        vm.renters = data;
         var filteredRenters = vm.renters.slice((page - 1) * vm.numberOfRecords, (page - 1) * vm.numberOfRecords + vm.numberOfRecords);
         vm.filteredRenters = filteredRenters;
 

@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using AspNet.Identity.MongoDB;
+using Data;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Linq;
 using WebAPITest.Models;
 
 namespace WebAPITest
@@ -18,7 +21,7 @@ namespace WebAPITest
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>().Users));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
@@ -29,10 +32,10 @@ namespace WebAPITest
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                //RequireNonLetterOrDigit = true,
+                //RequireDigit = true,
+                //RequireLowercase = true,
+                //RequireUppercase = true,
             };
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
@@ -40,6 +43,12 @@ namespace WebAPITest
                 manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
+        }
+
+        public IEnumerable<ApplicationUser> GetAll(IOwinContext context)
+        {
+            var users =  context.Get<ApplicationDbContext>().Users;
+            return users.AsQueryable().AsEnumerable();
         }
     }
 }

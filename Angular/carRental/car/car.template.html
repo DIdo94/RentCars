@@ -1,7 +1,7 @@
 ﻿<div class="stylish-color" style="border-radius:3px;padding:15px; padding-bottom: 0; margin-bottom: 25px">
     <div class="row">
-        <label class="col-xs-12"><input style="background-color:white" class="form-control" placeholder="Search brand" ng-model="search.brand" ng-change="cc.filter(search.brand, search.model)"></label>
-        <label class="col-xs-12"><input style="background-color:white" class="form-control" placeholder="Search model" ng-model="search.model" ng-change="cc.filter(search.brand, search.model)"></label>
+        <label class="col-xs-12"><input style="background-color:white" class="form-control" placeholder="Search brand" ng-model="search.brand.name" ng-change="cc.filter(search.brand.name, search.model.name)"></label>
+        <label class="col-xs-12"><input style="background-color:white" class="form-control" placeholder="Search model" ng-model="search.model.name" ng-change="cc.filter(search.brand.name, search.model.name)"></label>
     </div>
 </div>
 <div class="row">
@@ -9,7 +9,7 @@
 </div>
 <div class="row">
     <!--Card-->
-    <div ng-repeat="car in cc.filteredCars | filter:search  as filtered" class="col-xs-12 col-sm-6 col-md-3 car-wrapper">
+    <div ng-repeat="car in cc.filteredCars | filter:search as filtered" class="col-xs-12 col-sm-6 col-md-3 car-wrapper">
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-lg btn-orange" ng-hide="cc.currentUser.role === 'User'" ng-click="cc.editCar(car,cc.cars)">
@@ -33,13 +33,14 @@
                 <!--Card content-->
                 <div class="card-block">
                     <!--Title-->
-                    <h4 class="card-title stylish-color white-text">{{car.brand}} {{car.model}}</h4>
+                    <h4 class="card-title stylish-color white-text">{{car.brand.name}} {{car.model.name}}</h4>
                     <!--Text-->
-                    <p class="card-text">Color: {{car.color}}</p>
-                    <p class="card-text">Rented by: {{car.rentedBy}}</p>
+                    <p class="card-text">Rented until: {{car.rentedUntil | date:"MM/dd/yyyy h:mm "}}</p>
                     <p class="card-text">Status: {{car.status}}</p>
+                    <p class="card-text">Number of doors: {{car.numberOfDoors}}</p>
+                    <p class="card-text">Number of seats: {{car.numberOfSeats}}</p>
                     <div class="row">
-                        <button type="button" class="btn btn-lg stylish-color" ng-disabled="cc.isAvailable(car.rentedUntil.getTime())" ng-click="cc.rent(car)">
+                        <button type="button" class="btn btn-lg stylish-color" ng-disabled="car.status == 0" ng-click="cc.rent(car)">
                             Rent
                         </button>
                     </div>
