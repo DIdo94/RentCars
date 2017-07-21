@@ -6,11 +6,6 @@ namespace Models
 {
     public class Brand
     {
-        public Brand()
-        {
-            Models = new List<Model>();
-        }
-
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 

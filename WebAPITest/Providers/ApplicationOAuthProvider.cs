@@ -8,6 +8,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using WebAPITest.Models;
 using System.Web.Http.Cors;
+using Models;
+using Data;
 
 namespace WebAPITest.Providers
 {

@@ -1,29 +1,49 @@
-﻿using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using Data;
+using Microsoft.AspNet.Identity.Owin;
+using Models;
+using Reposotories.Interfaces;
+using Services.Interfaces;
 using System.Net.Http;
 using System.Web.Http;
 
 namespace WebAPITest.Controllers
 {
-    [RoutePrefix("api/rentalHitories")]
+    [RoutePrefix("api/rentalHistories")]
     [Authorize]
     public class RentalHistoriesController : ApiController
     {
         private readonly IRentalHistoryService _rentalHistoriesService;
+        private IApplicationUserManager _userManager;
 
         public RentalHistoriesController(IRentalHistoryService rentalHistoriesService)
         {
             _rentalHistoriesService = rentalHistoriesService;
+
+        }
+
+        public IApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
 
         [HttpGet]
-        public IHttpActionResult GetRentalHitories()
+        [Route("{userId}")]
+        public IHttpActionResult GetRentalHitoriesByUserId([FromUri] string userId)
         {
-            var rentalHistories = _rentalHistoriesService.GetAllRentalHistory();
-            return Ok(rentalHistories);
+            ApplicationUser user = UserManager.GetUserById(userId);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(user.RentalHistories);
         }
     }
 }

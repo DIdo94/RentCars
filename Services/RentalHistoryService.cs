@@ -1,28 +1,35 @@
 ﻿using Services.Interfaces;
 using System.Collections.Generic;
 using Models;
-using MongoDB.Bson;
-using Data.Interfaces;
+using Reposotories.Interfaces;
+using System;
+using Data;
 
 namespace Services
 {
     public class RentalHistoryService : IRentalHistoryService
     {
-        IRentalHistoryRepository _rentalHistoryRepository; 
+        private readonly IApplicationUserManager _userManager;
 
-        public RentalHistoryService(IRentalHistoryRepository rentalHistoryRepository)
+        public RentalHistoryService(IApplicationUserManager userManager)
         {
-            _rentalHistoryRepository = rentalHistoryRepository;
+            _userManager = userManager;
         }
 
-        public IEnumerable<RentalHistory> GetAllRentalHistory()
+        public bool AddRentalHistory(string userId, Car car)
         {
-            return _rentalHistoryRepository.GetAll();
+            return _userManager.AddRentalHistory(userId, car);
         }
 
-        public RentalHistory GetRentalHistoryById(string id)
+        public IEnumerable<RentalHistory> GetRentalHitoriesByUserId(string userId)
         {
-            return _rentalHistoryRepository.GetById(id);
+            var user = _userManager.GetUserById(userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user.RentalHistories;
         }
     }
 }

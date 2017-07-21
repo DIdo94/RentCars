@@ -18,15 +18,24 @@ namespace Data
 
         public bool AddCar(Car car)
         {
-            car.Id = ObjectId.GenerateNewId().ToString();
-            _context.Cars.InsertOne(car);
-            return true;
+            try
+            {
+                car.Id = ObjectId.GenerateNewId().ToString();
+                _context.Cars.InsertOne(car);
+                return true;
+            }
+            catch (MongoWriteException)
+            {
+
+                return false;
+            }
+          
         }
 
         public bool EditCar(Car car)
         {
-            _context.Cars.ReplaceOne(model => model.Id == car.Id, car);
-            return true;
+            ReplaceOneResult result = _context.Cars.ReplaceOne(model => model.Id == car.Id, car);
+            return result.IsAcknowledged;
         }
 
         public IEnumerable<Car> GetAll()
@@ -53,12 +62,13 @@ namespace Data
 
         public bool RentCar(Car car)
         {
+            car.RentedFrom = DateTime.Now;
             var update = Builders<Car>.Update
-                .Set(c => c.RentedUntil, car.RentedUntil)
-                .Set(c => c.RentedFrom, car.RentedFrom)
-                .Set(c => c.Status, car.Status);
-           UpdateResult updateResult = _context.Cars.UpdateOne(model => model.Id == car.Id, update);
-           return updateResult.IsAcknowledged;
+               .Set(c => c.RentedUntil, car.RentedUntil)
+               .Set(c => c.RentedFrom, car.RentedFrom)
+               .Set(c => c.Status, car.Status);
+            UpdateResult updateResult = _context.Cars.UpdateOne(model => model.Id == car.Id, update);
+            return updateResult.IsAcknowledged;
         }
     }
 }

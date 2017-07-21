@@ -8,6 +8,7 @@ using WebAPITest.Providers;
 using WebAPITest.Models;
 using System.Web.Http;
 using Newtonsoft.Json.Serialization;
+using Data;
 
 namespace WebAPITest
 {
@@ -22,7 +23,7 @@ namespace WebAPITest
         {
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(RentalCarsContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 
             // Enable the application to use a cookie to store information for the signed in user

@@ -47,7 +47,6 @@
     vm.rentCar = function (scope) {
         vm.car.rentedBy = currentUser;//.name;
         vm.car.status = 0;
-        var wrapper = moment();
         vm.car.rentedFrom = new Date().toISOString();
         vm.car.rentedUntil = new Date(vm.car.rentedUntil).toISOString();
         CarService.rent(vm.car).success(function () {
@@ -60,7 +59,6 @@
     };
 
     vm.editCar = function (scope) {
-        debugger;
         vm.car.status = vm.status.key;
         CarService.editCar(vm.car).success(function () {
             angular.copy(vm.car, car);
@@ -94,7 +92,8 @@
         });
     }
     vm.onTimeSet = function (newDate, oldDate) {
-        vm.car.rentedUntil = moment(vm.car.rentedUntil).format("MM-DD-YYYY, h:mm:ss A");
+        vm.car.rentedUntil = moment(vm.car.rentedUntil).format("YYYY-MM-DDTHH:mm:ss");
+        //vm.car.rentedUntil = moment(vm.car.rentedUntil).format("MM-DD-YYYY, h:mm:ss A");
     }
 
     return vm;

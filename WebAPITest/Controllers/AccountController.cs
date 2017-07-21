@@ -15,18 +15,26 @@ using Microsoft.Owin.Security.OAuth;
 using WebAPITest.Models;
 using WebAPITest.Providers;
 using WebAPITest.Results;
+using Microsoft.AspNet.SignalR;
+using WebAPITest.Hubs;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Models;
+using Data;
 
 namespace WebAPITest.Controllers
 {
-    [Authorize]
+    [System.Web.Http.Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
+        private IHubContext _renterHub;
 
         public AccountController()
         {
+            _renterHub = GlobalHost.ConnectionManager.GetHubContext<RenterHub>();
         }
 
         public AccountController(ApplicationUserManager userManager,
@@ -85,16 +93,6 @@ namespace WebAPITest.Controllers
             }
 
             List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
-
-            //foreach (IdentityUserLogin linkedAccount in user.Logins)
-            //{
-            //    logins.Add(new UserLoginInfoViewModel
-            //    {
-            //        LoginProvider = linkedAccount.LoginProvider,
-            //        ProviderKey = linkedAccount.ProviderKey
-            //    });
-            //}
-
             if (user.PasswordHash != null)
             {
                 logins.Add(new UserLoginInfoViewModel
@@ -331,19 +329,21 @@ namespace WebAPITest.Controllers
             {
                 Email = model.Email,
                 UserName = model.Email,
-                //DateOfBirth = model.DateOfBirth,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 ImageUrl = model.ImageUrl
             };
-
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
             }
 
+            var userObject = JsonConvert.SerializeObject(user, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+            _renterHub.Clients.All.userAdded(userObject);
             return Ok();
         }
 

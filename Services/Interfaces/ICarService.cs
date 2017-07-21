@@ -16,5 +16,7 @@ namespace Services.Interfaces
         bool EditCar(Car car);
 
         bool RemoveCar(Car car);
+
+        bool AddCar(Car car);
     }
 }

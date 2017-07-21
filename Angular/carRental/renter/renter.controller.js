@@ -1,17 +1,5 @@
 ﻿(function () {
-    function RenterController(data, UserService) {
-        //var renters = [
-        //    { id: 1, firstName: 'firstName', lastName: 'Spoer', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 2, firstName: 'second', lastName: 'Lvhe', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 3, firstName: 'some', lastName: 'Dea', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 4, firstName: 'seco', lastName: 'Soae', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 5, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //    { id: 6, firstName: 'thr', lastName: 'Ses', imageUrl: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' },
-        //];
+    function RenterController(data, $scope, UserService, Hub) {
         var vm = this;
         var page = 1;
         var numberOfRecords = 1;
@@ -21,6 +9,19 @@
         vm.renters = data;
         var filteredRenters = vm.renters.slice((page - 1) * vm.numberOfRecords, (page - 1) * vm.numberOfRecords + vm.numberOfRecords);
         vm.filteredRenters = filteredRenters;
+
+
+        var hub = new Hub('renterHub', {
+            listeners: {
+                'userAdded': function (user) {
+                    debugger;
+                    var parsedRenter = JSON.parse(user);
+                    vm.renters.push(parsedRenter);
+                    $scope.$apply();
+                }
+            },
+            rootPath: 'http://localhost:61818/signalr'
+        });
 
         function pageChange(pageNumber) {
             this.page = pageNumber;

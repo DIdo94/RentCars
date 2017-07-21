@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using LightInject;
-using System.Web.Http.Cors;
+using Newtonsoft.Json;
+using Microsoft.AspNet.SignalR;
+using WebAPITest.Controllers;
 
 namespace WebAPITest
 {
@@ -14,6 +12,10 @@ namespace WebAPITest
     {
         public static void Register(HttpConfiguration config)
         {
+            var jsonSerializerSettings = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings;
+            jsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();

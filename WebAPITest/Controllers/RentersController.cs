@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNet.Identity.Owin;
-using Services.Interfaces;
+﻿using Data;
+using Microsoft.AspNet.Identity.Owin;
+using Reposotories.Interfaces;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -9,20 +10,19 @@ namespace WebAPITest.Controllers
     [Authorize]
     public class RentersController : ApiController
     {
-        //private readonly IUserService _userService;
-        private ApplicationUserManager _userManager;
+        private IApplicationUserManager _userManager;
 
         public RentersController()
         {
             
         }
 
-        public RentersController(ApplicationUserManager userManager)
+        public RentersController(IApplicationUserManager userManager)
         {
             UserManager = userManager;
         }
 
-        public ApplicationUserManager UserManager
+        public IApplicationUserManager UserManager
         {
             get
             {
@@ -37,21 +37,8 @@ namespace WebAPITest.Controllers
         [HttpGet]
         public IHttpActionResult GetRenters()
         {
-            var users = UserManager.GetAll(Request.GetOwinContext());
+            var users = UserManager.GetAllUsers();
             return Ok(users);
-        }
-
-        [HttpGet]
-        [Route("{userId}")]
-        public IHttpActionResult GetRentalHitories([FromUri] string userId)
-        {
-            var user = UserManager.FindByIdAsync(userId).Result;
-            if (user == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(user.RentalHistories);
         }
     }
 }

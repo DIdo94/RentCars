@@ -4,7 +4,6 @@
     }
 
     this.getAll = function () {
-        debugger;
         var token = $cookies;
         var request = {
             method: 'GET',
@@ -57,7 +56,7 @@
         var request = {
             "async": true,
             "crossDomain": true,
-            "url": "http://localhost:61818/api/cars/add",
+            "url": "http://localhost:61818/api/cars",
             "method": "POST",
             "headers": {
                 "content-type": "application/json",

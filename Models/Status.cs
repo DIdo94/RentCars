@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace Models
+﻿namespace Models
 {
-    //[Flags]
     public enum Status
     {
         Rented,

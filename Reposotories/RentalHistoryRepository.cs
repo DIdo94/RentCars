@@ -4,6 +4,7 @@ using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Models;
+using System;
 
 namespace Data
 {
@@ -15,14 +16,10 @@ namespace Data
         {
             _context = new RentalCarsContext();
         }
-        public IEnumerable<RentalHistory> GetAll()
-        {
-            return _context.RentalHistories.AsQueryable().ToEnumerable();
-        }
 
-        public RentalHistory GetById(string id)
+        public RentalHistory GetByUserId(string userId)
         {
-            return _context.RentalHistories.AsQueryable().FirstOrDefault(rh => rh.Id == id);
+            throw new NotImplementedException();
         }
     }
 }

@@ -16,7 +16,5 @@ namespace Models
         public Brand Brand { get; set; }
 
         public Model Model { get; set; }
-
-        public User Renter { get; set; }
     }
 }

@@ -15,6 +15,11 @@ namespace Services
             _carReposotory = carRepository;
         }
 
+        public bool AddCar(Car car)
+        {
+            return _carReposotory.AddCar(car);
+        }
+
         public bool EditCar(Car car)
         {
             return _carReposotory.EditCar(car);

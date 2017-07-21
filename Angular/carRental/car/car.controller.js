@@ -1,5 +1,6 @@
 ﻿(function () {
-    function CarsController($state, $scope, ngDialog, $cookies, data, CarService, Notification) {
+    function CarsController($state, $scope, ngDialog, $cookies, data, CarService, Notification, Hub) {
+        debugger;
         var controller = this;
         controller.carService = CarService;
         var cars = [];
@@ -17,6 +18,33 @@
         controller.filteredCars = filteredCars;
         var currentUser = $cookies.getObject('user');
         controller.currentUser = currentUser;
+
+        var hub = new Hub('carHub', {
+            listeners: {
+                'carUpdated': function (dbCar) {
+                    var parsedCar = JSON.parse(dbCar);
+                    var updatedCarIndex = cars.findIndex(function (car) {
+                        return car.id === parsedCar.id;
+                    });
+
+                    angular.copy(parsedCar, cars[updatedCarIndex]);
+                    $scope.$apply();
+                },
+                'carAdded': function (dbCar) {
+                    var parsedCar = JSON.parse(dbCar);
+                    cars.push(parsedCar);
+                    $scope.$apply();
+                },
+                'carRemoved': function (carId) {
+                    var carIndex = cars.findIndex(car => car.id == carId);
+                    if (carIndex > -1) {
+                        cars.splice(cars[carIndex], 1);
+                        $scope.$apply();
+                    }
+                }
+            },
+            rootPath: 'http://localhost:61818/signalr'
+        });
 
         function pageChange(pageNumber) {
             this.page = pageNumber;

@@ -1,13 +1,12 @@
 ﻿using Models;
-using MongoDB.Bson;
 using System.Collections.Generic;
 
 namespace Services.Interfaces
 {
     public interface IRentalHistoryService
     {
-        IEnumerable<RentalHistory> GetAllRentalHistory();
+        IEnumerable<RentalHistory> GetRentalHitoriesByUserId(string userId);
 
-        RentalHistory GetRentalHistoryById(string id);
+        bool AddRentalHistory(string userId, Car car);
     }
 }

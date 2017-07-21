@@ -1,5 +1,7 @@
 ﻿function UserService($state, $cookies, $http) {
-    var token = "zAFhM1fdrr00J9hJQjMDfDy8Cp3bhRRBKqIFLtS2LvuzBSNpkG84qht38Rof95atSIXXKAu3852ROSZPb_dlITInW2rQJaNciB7MGRvfntBXW7FDg7vlI7W6JtV3XMheEchUWUnbVcRpuaB1QoLQD2Yg4YtStfKwUZJAN1iQ2eKYZ5geQSLw5xS3k-Hkn4HtZClKIu8F_dCSJ8oBbB8mWnmEqpZOeQdD8m96d5sEQUOE0Vr8rOzLrD6jYXOj8r7sbWaM9_-7vHbbucI8Zu3lIH2jcr1B3JYc2MWst6d26vb-7BuZn-FiM0NFMNMHJYU6AjZyNCY7Ev3UymSPW2ZB9ybw_QcyGN8TGNLUF9FNF0raUYEfxKWPkN1-zwZXOYcf3EoECZSezvgtdokv5GyDR_PC4hLAHDOSnQSJjihS0rsu78C0AZI735mt2iKmWpfM5o5_HwhWMU4sn3KrarDTxDGWA20PzdRDBwh7cHonrf0";
+    function getToken() {
+        return $cookies.getObject('token');
+    }
     this.register = function (user) {
         var request = {
             "async": true,
@@ -20,7 +22,8 @@
             })
         };
         return $http(request);
-    }
+    };
+
     this.login = function (user) {
         var request = {
             "async": true,
@@ -37,13 +40,9 @@
                 "password": user.password
             })
         };
+
         return $http(request);
-        //{
-        //      $cookies.putObject('user', { name: userWithEmail.name, email: userWithEmail.email, role: userWithEmail.role });
-        //      var some = $cookies.getObject('user');
-        //      $state.go('cars');
-        //  }
-    }
+    };
 
     this.getAll = function () {
         var request = {
@@ -51,29 +50,29 @@
             url: 'http://localhost:61818/api/renters',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + token,
+                "Authorization": "Bearer " + getToken()
             },
             data: '',
             params: ''
         };
 
         return $http(request);
-    }
+    };
 
     this.getUserRentalHistories = function (userId) {
         var request = {
             method: 'GET',
-            url: 'http://localhost:61818/api/renters/' + userId,
+            url: 'http://localhost:61818/api/rentalHistories/' + userId,
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + token,
+                "Authorization": "Bearer " + getToken()
             },
             data: '',
             params: ''
         };
 
         return $http(request);
-    }
+    };
 
     return this;
 }

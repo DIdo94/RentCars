@@ -3,7 +3,7 @@
         angular.bootstrap(document.getElementsByTagName('body')[0], ['ngCookies', 'carRental']);
     });
 
-    angular.module('carRental', ['carRental.users', 'carRental.cars', 'carRental.renters', 'carRental.rentalHistory', 'carRental.carDetails', 'ui.bootstrap', 'ui.router', 'ngDialog', 'ngCookies', 'ui-notification', 'ui.bootstrap.datetimepicker'])
+    angular.module('carRental', ['carRental.users', 'carRental.cars', 'carRental.renters', 'carRental.rentalHistory', 'carRental.carDetails', 'ui.bootstrap', 'ui.router', 'ngDialog', 'ngCookies', 'ui-notification', 'ui.bootstrap.datetimepicker', 'SignalR'])
         .service('CarService', CarService)
         .service('UserService', UserService)
         .config(($stateProvider, $urlRouterProvider, $locationProvider, NotificationProvider) => {
@@ -28,7 +28,7 @@
                         return UserService.getAll().then(function (data) {
                             return data.data;
                         }, function () {
-                            $location.url('/');
+                            location.href = '/';
                         });
                     }
                 },
@@ -42,7 +42,7 @@
                         return UserService.getUserRentalHistories($stateParams.id).then(function (data) {
                             return data.data;
                         }, function () {
-                            alert('FCK');
+                            location.href = '/';
                         });
                     }
                 },
@@ -62,16 +62,6 @@
                 },
                 controller: 'CarsController as cc',
             })
-            //.state('cars.details', {
-            //    url: '/:id',
-            //    templateUrl: 'carRental/carDetails/carDetails.template.html',
-            //    controller: 'CarDetailsController as cdc'
-            //})
-            //.state('rented', {
-            //    url: '/rented',
-            //    templateUrl: 'carRental/rentalHistory/rentalHistory.template.html',
-            //    controller: 'RentalHistoryController as rhc'
-            //})
             .state('register', {
                 url: '/register',
                 templateUrl: 'carRental/user/register.template.html',
