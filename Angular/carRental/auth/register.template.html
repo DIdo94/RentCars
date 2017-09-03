@@ -1,0 +1,156 @@
+﻿<div class="wrapper">
+    <div class="row main">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">Register</h1>
+                <hr />
+            </div>
+        </div>
+        <div class="main-login main-center">
+            <form class="form-horizontal" method="post" action="#" name="registerForm">
+                <div class="form-group">
+                    <label for="firstName" class="cols-sm-2 control-label">First Name</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text"
+                                   class="form-control"
+                                   name="firstName"
+                                   id="firstName"
+                                   placeholder="Enter your first name"
+                                   ng-minlength="2"
+                                   ng-maxlength="50"
+                                   ng-required="true"
+                                   ng-model="user.firstName" />
+                        </div>
+                    </div>
+                    <div ng-show="registerForm.firstName.$error.required && registerForm.firstName.$dirty"
+                         class="red-text">
+                        First name is required
+                    </div>
+                    <div ng-show="registerForm.firstName.$dirty &&
+                            (registerForm.firstName.$error.minlength || registerForm.firstName.$error.maxlength)"
+                         class="red-text">
+                        First name should be between 2 and 50 characters
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName" class="cols-sm-2 control-label">First Name</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text"
+                                   class="form-control"
+                                   name="lastName"
+                                   id="lastName"
+                                   placeholder="Enter your last name"
+                                   ng-minlength="5"
+                                   ng-maxlength="50"
+                                   ng-required="true"
+                                   ng-model="user.lastName" />
+                        </div>
+                    </div>
+                    <div ng-show="registerForm.lastName.$error.required && registerForm.lastName.$dirty"
+                         class="red-text">
+                        Last name is required
+                    </div>
+                    <div ng-show="registerForm.lastName.$dirty &&
+                            (registerForm.lastName.$error.minlength || registerForm.lastName.$error.maxlength)"
+                         class="red-text">
+                        Last name should be between 5 and 50 characters
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Email</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="email" 
+                                   class="form-control" 
+                                   name="email" 
+                                   id="email" 
+                                   placeholder="Enter your Email" 
+                                   ng-required="true" 
+                                   ng-model="user.email" />
+                        </div>
+                    </div>
+                    <div ng-show="registerForm.email.$dirty && !registerForm.email.$valid"
+                         class="red-text">
+                        Email is not correct
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" 
+                                   class="form-control" 
+                                   name="password" 
+                                   id="password" 
+                                   placeholder="Enter your Password" 
+                                   ng-minlength="6" 
+                                   ng-maxlength="20" 
+                                   ng-required="true" 
+                                   ng-model="user.password" />
+                        </div>
+                    </div>
+                    <div ng-show="registerForm.password.$dirty && registerForm.password.$error.required"
+                         class="red-text">
+                        Password is required
+                    </div>
+                    <div ng-show="registerForm.password.$dirty &&
+                            (registerForm.password.$error.minlength || registerForm.password.$error.maxlength)"
+                         class="red-text">
+                        Password should be between 6 and 20 characters
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password"
+                                   class="form-control"
+                                   name="confirm"
+                                   id="confirm"
+                                   placeholder="Confirm your Password"
+                                   required
+                                   ng-model="user.confirmPassword"
+                                   compare-to="user.password" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="imageUrl" class="cols-sm-2 control-label">Image url</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="url"
+                                   class="form-control"
+                                   name="imageUrl"
+                                   id="imageUrl"
+                                   placeholder="Enter a valid image url"
+                                   required
+                                   ng-model="user.imageUrl" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <img width="300" height="300" ng-src="{{user.imageUrl}}" />
+                </div>
+                <div class="form-group">
+                    <button type="button"
+                            class="btn stylish-color btn-lg login-button"
+                            ng-disabled="registerForm.$invalid"
+                            ng-click="ac.register(user)">
+                        Register
+                    </button>
+                </div>
+                <div class="login-register">
+                    <a ui-sref="login">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

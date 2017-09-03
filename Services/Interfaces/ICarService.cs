@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.RequestModels;
 using System.Collections.Generic;
 
 namespace Services.Interfaces
@@ -6,6 +7,8 @@ namespace Services.Interfaces
     public interface ICarService
     {
         IEnumerable<Car> GetAllCars();
+
+        CarsFilterResult GetAllCars(CarsFilterCrireria criteria);
 
         Car GetCarById(string id);
 
@@ -18,5 +21,7 @@ namespace Services.Interfaces
         bool RemoveCar(Car car);
 
         bool AddCar(Car car);
+
+        bool SetCarStatusAvailable(Car car);
     }
 }

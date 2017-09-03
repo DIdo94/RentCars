@@ -1,44 +1,57 @@
 ﻿(function () {
-    function CarsController($state, $scope, ngDialog, $cookies, data, CarService, Notification, Hub) {
+    function CarsController($state, $scope, ngDialog, $cookies, data, CarService, AuthFactory, Notification, Hub) {
         debugger;
         var controller = this;
-        controller.carService = CarService;
-        var cars = [];
-        var itemBrand = '';
-        var itemModel = '';
+        var roles = AuthFactory.getUserRoles();
         controller.cars = [];
-        var page = 1;
-        var numberOfRecords = 1;
-        controller.page = page;
-        controller.numberOfRecords = numberOfRecords;
-        cars = data;
-        controller.cars = cars.slice();
-        var firstRecords = (controller.page - 1) * controller.numberOfRecords;
-        var filteredCars = controller.cars.slice(firstRecords, (page - 1) * controller.numberOfRecords + controller.numberOfRecords);
-        controller.filteredCars = filteredCars;
-        var currentUser = $cookies.getObject('user');
-        controller.currentUser = currentUser;
+        var filterCriteria = {
+            brand: '',
+            model: '',
+            pageNumber: 1,
+            itemsPerPage: 3,
+            status: 'Available'
+        };
+        controller.filterCriteria = filterCriteria;
+        controller.cars = data.cars;
+        controller.totalItems = data.totalItems;
+        controller.currentUser = $cookies.getObject('user');
+        function matchCriteria(parsedCar) {
+            if (parsedCar.brand.name.toLowerCase().includes(controller.filterCriteria.brand) &&
+                parsedCar.model.name.toLowerCase().includes(controller.filterCriteria.model) &&
+                parsedCar.status === controller.filterCriteria.status) {
+                return true;
+            }
 
+            return false;
+        }
         var hub = new Hub('carHub', {
             listeners: {
                 'carUpdated': function (dbCar) {
                     var parsedCar = JSON.parse(dbCar);
-                    var updatedCarIndex = cars.findIndex(function (car) {
+                    var carIndex = controller.cars.findIndex(function (car) {
                         return car.id === parsedCar.id;
                     });
-
-                    angular.copy(parsedCar, cars[updatedCarIndex]);
-                    $scope.$apply();
+                    if (carIndex > -1 && matchCriteria(parsedCar)) {
+                        angular.copy(parsedCar, controller.cars[carIndex]);
+                        $scope.$apply();
+                    }
                 },
                 'carAdded': function (dbCar) {
                     var parsedCar = JSON.parse(dbCar);
-                    cars.push(parsedCar);
-                    $scope.$apply();
+                    if (matchCriteria(parsedCar)) {
+                        if (controller.totalItems % controller.filterCriteria.itemsPerPage) {
+                            controller.cars.push(parsedCar);
+                        }
+
+                        controller.totalItems += 1;
+                        $scope.$apply();
+                    }
                 },
                 'carRemoved': function (carId) {
-                    var carIndex = cars.findIndex(car => car.id == carId);
+                    var carIndex = controller.cars.findIndex(car => car.id === carId);
                     if (carIndex > -1) {
-                        cars.splice(cars[carIndex], 1);
+                        controller.cars.splice(controller.cars[carIndex], 1);
+                        controller.totalItems -= 1;
                         $scope.$apply();
                     }
                 }
@@ -46,127 +59,92 @@
             rootPath: 'http://localhost:61818/signalr'
         });
 
-        function pageChange(pageNumber) {
-            this.page = pageNumber;
-            firstRecords = (this.page - 1) * controller.numberOfRecords;
-            angular.copy(controller.cars.slice(firstRecords, firstRecords + controller.numberOfRecords), controller.filteredCars);
-        }
+        controller.pageChange = function () {
+            CarService.getAll(filterCriteria).success(function (data) {
+                controller.cars = data.cars;
+            }).error(function () {
+                Notification.error('Unable to load cars');
+            });
+        };
 
-        function filter(brand, model) {
-            this.page = 1;
-            controller.page = 1;
-            angular.copy(cars.filter(function (item) {
-                itemBrand = brand ? brand : '';
-                itemModel = model ? model : '';
-                return item.brand.name.toLowerCase().includes(itemBrand.toLowerCase()) && item.model.name.toLowerCase().includes(itemModel.toLocaleLowerCase());
-            }), controller.cars);
-            firstRecords = (this.page - 1) * controller.numberOfRecords;
-            angular.copy(controller.cars.slice(firstRecords, firstRecords + controller.numberOfRecords), controller.filteredCars);
-        }
+        controller.filter = function () {
+            controller.filterCriteria.pageNumber = 1;
+            controller.filterCriteria.model = controller.filterCriteria.model.toLowerCase();
+            controller.filterCriteria.brand = controller.filterCriteria.brand.toLowerCase();
+            CarService.getAll(filterCriteria).success(function (data) {
+                controller.cars = data.cars;
+                controller.totalItems = data.totalItems;
+            }).error(function () {
+                Notification.error('Unable to load cars');
+            });
+        };
 
         this.watchFunction = function (value) {
-            angular.copy(cars.slice(), controller.cars);
-            filter(itemBrand, itemModel);
-        }
+            controller.cars = CarService.filterCarsResult.cars;
+            controller.totalItems = CarService.filterCarsResult.totalItems;
+        };
 
         $scope.$watch(function ($scope) {
-            return cars;
+            return CarService.filterCarsResult.cars;
         }, this.watchFunction, true);
 
-        function isAvailable(carRentDate) {
-            return carRentDate > new Date().getTime();
-        }
-
-        function rentModal(car) {
-            ngDialog.open({
-                template: 'carRental/car/rentModal.html',
-                controller: ['car', 'dbCars', 'currentUser', 'CarService', 'Notification', RentModal],
-                className: 'ngdialog-theme-default',
-                controllerAs: 'vm',
-                showClose: false,
-                scope: $scope,
-                resolve: {
-                    car: function () {
-                        var dbCar = cars.filter(function (item) {
-                            return item.id === car.id;
-                        })[0];
-                        return dbCar;
-                    },
-                    dbCars: function () { return controller.cars; },
-                    currentUser: function () { return controller.currentUser; },
-                    CarService: function () { return controller.carService; },
-                    notification: function () { return Notification }
-                }
-            });
-        }
-
-        function addModal(controllerCars) {
-            ngDialog.open({
-                template: 'carRental/car/addCarTemplate.html',
-                controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', RentModal],
-                className: 'ngdialog-theme-default',
-                controllerAs: 'vm',
-                showClose: false,
-                scope: $scope,
-                resolve: {
-                    car: function () { return null; },
-                    cars: function () { return cars; },
-                    currentUser: function () { return currentUser; },
-                    CarService: function () { return controller.carService; },
-                    notification: function () { return Notification }
-                }
-            });
-        }
-
-        function editModal(car) {
-            ngDialog.open({
-                template: 'carRental/car/editCarTemplate.html',
-                controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', RentModal],
-                className: 'ngdialog-theme-default',
-                controllerAs: 'vm',
-                showClose: false,
-                scope: $scope,
-                resolve: {
-                    car: function () { return car; },
-                    cars: function () { return cars; },
-                    currentUser: function () { return currentUser; },
-                    CarService: function () { return controller.carService; },
-                    notification: function () { return Notification }
-                }
-            });
-        }
-
-        function deleteModal(car) {
-            ngDialog.open({
-                template: 'carRental/car/removeCarTemplate.html',
-                controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', RentModal],
-                className: 'ngdialog-theme-default',
-                controllerAs: 'vm',
-                showClose: false,
-                scope: $scope,
-                resolve: {
-                    car: function () { return car; },
-                    cars: function () { return cars; },
-                    currentUser: function () { return currentUser; }
-                }
-            });
-        }
-
-        return {
-            cars: controller.cars,
-            filteredCars: controller.filteredCars,
-            isAvailable: isAvailable,
-            rent: rentModal,
-            add: addModal,
-            editCar: editModal,
-            remove: deleteModal,
-            page: controller.page,
-            pageChange: pageChange,
-            numberOfRecords: controller.numberOfRecords,
-            filter: filter,
-            currentUser: controller.currentUser
+        var modalOptions = {
+            template: '',
+            controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', 'filterCriteria', 'totalItems', CarModalController],
+            className: 'ngdialog-theme-default',
+            controllerAs: 'vm',
+            showClose: false,
+            scope: $scope,
+            resolve: {
+                car: function () { return null; },
+                cars: function () { return controller.cars; },
+                currentUser: function () { return controller.currentUser; },
+                CarService: function () { return CarService; },
+                notification: function () { return Notification; },
+                filterCriteria: function () { return controller.filterCriteria; },
+                totalItems: function () { return controller.totalItems; }
+            }
         };
+
+        controller.rentCar = function (car) {
+            modalOptions.template = 'carRental/car/rentCar.template.html';
+            modalOptions.resolve.car = function () {
+                return car;
+            };
+            ngDialog.open(modalOptions);
+        };
+
+        controller.addCar = function () {
+            modalOptions.template = 'carRental/car/addCar.template.html';
+            modalOptions.resolve.car = function () {
+                return null;
+            };
+
+            ngDialog.open(modalOptions);
+        };
+
+        controller.editCar = function (car) {
+            modalOptions.template = 'carRental/car/editCar.template.html';
+            modalOptions.resolve.car = function () {
+                return car;
+            };
+            ngDialog.open(modalOptions);
+        };
+
+        controller.deleteCar = function (car) {
+            modalOptions.template = 'carRental/car/removeCar.template.html';
+            modalOptions.resolve.car = function () {
+                return car;
+            };
+            ngDialog.open(modalOptions);
+        };
+
+        controller.isAdmin = function () {
+            return roles.includes('Admin');
+        }
+
+        return controller;
     }
-    angular.module('carRental.cars', ['carRental.rentalHistory', 'carRental.renters', 'ngCookies', 'ui.bootstrap.tpls'])
+    angular.module('carRental.cars', ['carRental.rentalHistory', 'ngCookies', 'ui.bootstrap.tpls'])
         .controller('CarsController', CarsController);
 })();

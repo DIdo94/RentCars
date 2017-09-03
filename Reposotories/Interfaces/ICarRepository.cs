@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.RequestModels;
 using System.Collections.Generic;
 
 namespace Data.Interfaces
@@ -6,6 +7,8 @@ namespace Data.Interfaces
     public interface ICarRepository
     {
         IEnumerable<Car> GetAll();
+
+        CarsFilterResult GetAll(CarsFilterCrireria criteria);
 
         Car GetById(string id);
 
@@ -18,5 +21,7 @@ namespace Data.Interfaces
         bool EditCar(Car car);
 
         bool RemoveCar(Car car);
+
+        bool SetCarStatusAvailable(Car car);
     }
 }

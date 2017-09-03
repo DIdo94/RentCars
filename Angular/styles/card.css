@@ -1,0 +1,36 @@
+﻿.card-block {
+    text-align: center;
+}
+
+.card-title {
+    background-color: lightgray;
+    padding: 5px;
+}
+
+.car-wrapper .card {
+    margin-bottom: 30px;
+    height: 500px !important;
+}
+
+.car-wrapper .card-image {
+    width: 100% !important;
+    height: 230px !important;
+}
+
+.user-wrapper .card {
+    margin-bottom: 30px;
+    height: 400px !important;
+}
+
+.user-wrapper .card-image {
+    width: 100% !important;
+    height: 200px !important;
+}
+
+.user-wrapper button {
+    margin-top: 55px;
+}
+
+.card-block {
+    text-align: center;
+}

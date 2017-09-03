@@ -6,22 +6,25 @@
             <div class="dropdown">
                 <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
                     <div class="input-group">
-                        <input type="text" 
-                               class="form-control" 
-                               required disabled datetime="yyyy-MM-dd HH:mm:ss" 
+                        <input type="text"
+                               class="form-control"
+                               required disabled datetime="yyyy-MM-dd HH:mm:ss"
                                data-ng-model="vm.car.rentedUntil">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                    <datetimepicker data-on-set-time="vm.onTimeSet(newDate, oldDate)" 
-                                    data-ng-model="vm.car.rentedUntil" 
+                    <datetimepicker data-on-set-time="vm.onTimeSet(newDate, oldDate)"
+                                    data-ng-model="vm.car.rentedUntil"
                                     data-datetimepicker-config="{ dropdownSelector: '#dropdown2'}"
                                     data-before-render="vm.startDateBeforeRender($dates,$view )" />
                 </ul>
-            </div>         
-            <span class="red-text" ng-show="rentForm.rentFor.$error.min || rentForm.rentFor.$error.max">Pick a time between Between 1 and 8 hours</span>
+            </div>
+            <span class="red-text"
+                  ng-show="rentForm.rentFor.$error.min || rentForm.rentFor.$error.max">
+                Pick a time in the range
+            </span>
         </div>
-        <button type="submit" class="btn blue darken-4" ng-disabled="rentForm.$invalid" ng-click="vm.rentCar(this)">Submit</button>
+        <button type="submit" class="btn blue darken-4" ng-disabled="rentForm.$invalid" ng-click="vm.rentCar(this)">Rent</button>
     </form>
 </div>

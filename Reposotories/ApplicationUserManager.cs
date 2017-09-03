@@ -1,14 +1,13 @@
 ﻿using AspNet.Identity.MongoDB;
-using Data.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Models;
+using Models.RequestModels;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Reposotories.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Data
@@ -41,15 +40,35 @@ namespace Data
             {
                 manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
+
             return manager;
         }
 
-        public IEnumerable<ApplicationUser> GetAllUsers()
+        public UsersFilterResult GetAllUsers(UsersFilterCriteria criteria)
         {
-            return _context.Users.AsQueryable().ToEnumerable();
+            IQueryable<ApplicationUser> users = _context.Users.AsQueryable();
+            if (!string.IsNullOrEmpty(criteria.FirstName?.Trim()))
+            {
+                // Case-insensitive string comparison is not supported as query string 
+                string firstNameToLower = criteria.FirstName.Trim().ToLower();
+                users = users.Where(u => u.FirstName.ToLower().StartsWith(firstNameToLower));
+            }
+
+            if (!string.IsNullOrEmpty(criteria.LastName?.Trim()))
+            {
+                string lastNameToLower = criteria.LastName.Trim().ToLower();
+                users = users.Where(u => u.LastName.ToLower().StartsWith(lastNameToLower));
+            }
+
+            int totalItems = users.Count();
+            return new UsersFilterResult()
+            {
+                Users = users.Skip((criteria.PageNumber - 1) * criteria.ItemsPerPage).Take(criteria.ItemsPerPage),
+                TotalItems = totalItems
+            };
         }
 
-        public bool AddRentalHistory(string userId, Car car)
+        public bool AddUserRentalHistory(string userId, Car car)
         {
             RentalHistory rentalHistory = new RentalHistory()
             {
@@ -72,6 +91,35 @@ namespace Data
         public ApplicationUser GetUserById(string userId)
         {
             return FindByIdAsync(userId).Result;
+        }
+
+        public RentalHistoriesResult GetUserRentalHistories(string userId, RentalHistoriesFilterCriteria criteria)
+        {
+            ApplicationUser user = GetUserById(userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            IQueryable<RentalHistory> rentalHistories = user.RentalHistories.AsQueryable();
+            if (!string.IsNullOrEmpty(criteria.Brand?.Trim()))
+            {
+                string brandToLower = criteria.Brand.Trim().ToLower();
+                rentalHistories = rentalHistories.Where(rh => rh.Brand.Name.ToLower().StartsWith(brandToLower));
+            }
+
+            if (!string.IsNullOrEmpty(criteria.Model?.Trim()))
+            {
+                string modelToLower = criteria.Model.Trim().ToLower();
+                rentalHistories = rentalHistories.Where(rh => rh.Model.Name.ToLower().StartsWith(modelToLower));
+            }
+
+            int totalItems = rentalHistories.Count();
+            return new RentalHistoriesResult()
+            {
+                RentalHistories = rentalHistories.Skip((criteria.PageNumber - 1) * criteria.ItemsPerPage).Take(criteria.ItemsPerPage),
+                TotalItems = totalItems
+            };
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 
 namespace Models
@@ -19,6 +21,7 @@ namespace Models
         public string LicenseNumber { get; set; }
 
         [BsonElement("status")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }
 
         [BsonElement("city")]

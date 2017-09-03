@@ -74,6 +74,14 @@
     <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RentalHistory.cs" />
+    <Compile Include="RequestModels\BaseFilterCriteria.cs" />
+    <Compile Include="RequestModels\CarsFilterCrireria.cs" />
+    <Compile Include="RequestModels\CarsFilterResult.cs" />
+    <Compile Include="RequestModels\RentalHistoriesFilterCriteria.cs" />
+    <Compile Include="RequestModels\RentalHistoriesResult.cs" />
+    <Compile Include="RequestModels\UsersFilterCriteria.cs" />
+    <Compile Include="RequestModels\UsersFilterResult.cs" />
+    <Compile Include="Roles.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="City.cs" />
   </ItemGroup>

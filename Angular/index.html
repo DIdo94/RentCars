@@ -1,9 +1,8 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Car Rental</title>
     <meta charset="utf-8" />
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css" rel="stylesheet" />
@@ -15,12 +14,9 @@
     <link href="styles/register.css" rel="stylesheet" />
     <link href="styles/main.css" rel="stylesheet" />
 </head>
-<body>
-
-    <nav class="navbar navbar-default navbar-fixed-top stylish-color" style="font-weight:500;" ng-controller="UserController">
-       
-         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
+<body class="grey lighten-4">
+    <nav class="navbar navbar-default navbar-fixed-top stylish-color main-navbar" ng-controller="AuthController">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -28,29 +24,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" ui-sref="mainPage">Brand</a>
+                <a class="navbar-brand" ui-sref="mainPage">
+                    Car Rentals
+                </a>
             </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a ui-sref="cars" ng-show="isLogged">Cars <span class="sr-only">(current)</span></a></li>
-                    <li><a ui-sref="renters" ng-show="isLogged">Renters</a></li>
-                    <!--<ul class="nav navbar-nav pull-right">-->
-                    <li><a ui-sref="register" ng-hide="isLogged">Register</a></li>
-                    <li><a ui-sref="login" ng-hide="isLogged">Login</a></li>
-                    <li><a ng-click="logout()" ng-show="isLogged">Logout</a></li>
-                    <!--</ul>-->
+                    <li><a ui-sref="cars" ng-show="isLogged()">Cars <span class="sr-only">(current)</span></a></li>
+                    <li><a ui-sref="users" ng-show="isLogged() && isAdmin()">Renters</a></li>
+                    <li><a ui-sref="register" ng-hide="isLogged()">Register</a></li>
+                    <li><a ui-sref="login" ng-hide="isLogged()">Login</a></li>
+                    <li><a ng-click="logout(false)" ng-show="isLogged()">Logout</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-    <main class="container" ui-view style="margin-top:100px;"></main>
+    <main class="container" ui-view></main>
     <script src="Scripts/angular.js"></script>
     <script src="Scripts/angular-ui-router.js"></script>
-    <!--<script src="Scripts/jquery-1.6.4.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>-->
     <script src="Scripts/jquery.signalR-2.2.0.js"></script>
     <script src="Scripts/angular-signalr-hub.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
@@ -58,22 +50,20 @@
     <script src="Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/js/mdb.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/1.0.0/js/ngDialog.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.4/angular-resource.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-bootstrap-datetimepicker/1.1.4/js/datetimepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-bootstrap-datetimepicker/1.1.4/js/datetimepicker.templates.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-data-table/0.7.0/dataTable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.8/smart-table.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-notification/0.3.6/angular-ui-notification.min.js"></script>
     <script src="carRental/shared/services/userService.js"></script>
+    <script src="carRental/shared/factories/authFactory.js"></script>
     <script src="carRental/shared/services/carService.js"></script>
-    <script src="carRental/renter/renter.controller.js"></script>
-    <script src="carRental/car/modalController.js"></script>
+    <script src="carRental/user/user.controller.js"></script>
+    <script src="carRental/car/carModal.controller.js"></script>
     <script src="carRental/car/car.controller.js"></script>
     <script src="carRental/rentalHistory/rentalHistory.controller.js"></script>
-    <script src="carRental/carDetails/carDetails.controller.js"></script>
-    <script src="carRental/user/userController.controller.js"></script>
+    <script src="carRental/auth/authController.controller.js"></script>
     <script src="carRental/app.js"></script>
 </body>
 </html>

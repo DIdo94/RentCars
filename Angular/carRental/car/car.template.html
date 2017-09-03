@@ -1,23 +1,33 @@
-﻿<div class="stylish-color" style="border-radius:3px;padding:15px; padding-bottom: 0; margin-bottom: 25px">
+﻿<div class="stylish-color filter-wrapper">
     <div class="row">
-        <label class="col-xs-12"><input style="background-color:white" class="form-control" placeholder="Search brand" ng-model="search.brand.name" ng-change="cc.filter(search.brand.name, search.model.name)"></label>
-        <label class="col-xs-12"><input style="background-color:white" class="form-control" placeholder="Search model" ng-model="search.model.name" ng-change="cc.filter(search.brand.name, search.model.name)"></label>
+        <label class="col-xs-12">
+            <input class="form-control"
+                   placeholder="Search brand"
+                   ng-model="cc.filterCriteria.brand"
+                   ng-change="cc.filter()">
+        </label>
+        <label class="col-xs-12">
+            <input class="form-control"
+                   placeholder="Search model"
+                   ng-model="cc.filterCriteria.model"
+                   ng-change="cc.filter()">
+        </label>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12" ng-hide="cc.currentUser.role === 'User'"><a class="btn stylish-color" ng-click="cc.add(cc.cars)">Add</a></div>
+    <div class="col-md-12" ng-show="cc.isAdmin()"><a class="btn stylish-color" ng-click="cc.addCar()">Add</a></div>
 </div>
 <div class="row">
     <!--Card-->
-    <div ng-repeat="car in cc.filteredCars | filter:search as filtered" class="col-xs-12 col-sm-6 col-md-3 car-wrapper">
+    <div ng-repeat="car in cc.cars | filter:search as filtered" class="col-xs-12 col-sm-6 col-md-3 car-wrapper">
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-lg btn-orange" ng-hide="cc.currentUser.role === 'User'" ng-click="cc.editCar(car,cc.cars)">
+                <button type="button" class="btn btn-lg btn-orange" ng-show="cc.isAdmin()" ng-click="cc.editCar(car)">
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-lg danger-color-dark" ng-click="cc.remove(car)">
+                <button type="button" class="btn btn-lg danger-color-dark" ng-show="cc.isAdmin()" ng-click="cc.deleteCar(car)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
             </div>
@@ -25,7 +35,7 @@
         <div class="card">
             <!--Card image-->
             <div class="view overlay hm-white-light">
-                <img ng-src="{{car.imageUrl}}" class="img-fluid" alt="">
+                <img ng-src="{{car.imageUrl}}" class="img-fluid card-image" alt="">
                 <a href="#">
                     <div class="mask flex-center"></div>
                 </a>
@@ -35,12 +45,19 @@
                     <!--Title-->
                     <h4 class="card-title stylish-color white-text">{{car.brand.name}} {{car.model.name}}</h4>
                     <!--Text-->
-                    <p class="card-text">Rented until: {{car.rentedUntil | date:"MM/dd/yyyy h:mm "}}</p>
-                    <p class="card-text">Status: {{car.status}}</p>
+                    <p class="card-text">Rented until: {{(car.rentedUntil) ? (car.rentedUntil | date:'MM/dd/yyyy h:mm') : ('Not rented yet')}}</p>
+                    <p class="card-text">
+                        Status: <span ng-class="car.status === 'Available' ?' teal-text' : 'red-text'">
+                            {{car.status}}
+                        </span>
+                    </p>
                     <p class="card-text">Number of doors: {{car.numberOfDoors}}</p>
                     <p class="card-text">Number of seats: {{car.numberOfSeats}}</p>
                     <div class="row">
-                        <button type="button" class="btn btn-lg stylish-color" ng-disabled="car.status == 0" ng-click="cc.rent(car)">
+                        <button type="button"
+                                class="btn btn-lg stylish-color"
+                                ng-disabled="car.status == 'Rented'"
+                                ng-click="cc.rentCar(car)">
                             Rent
                         </button>
                     </div>
@@ -51,9 +68,11 @@
 </div>
 <ul class="custom"
     max-size="3"
-    uib-pagination 
-    total-items="cc.cars.length"
-    ng-model="cc.page"
-    items-per-page="cc.numberOfRecords"
-    ng-change="cc.pageChange(cc.page)"></ul>
+    uib-pagination
+    total-items="cc.totalItems"
+    ng-model="cc.filterCriteria.pageNumber"
+    items-per-page="cc.filterCriteria.itemsPerPage"
+    ng-change="cc.pageChange()"></ul>
 <link href="../../styles/customPaging.css" rel="stylesheet" />
+<link href="../../styles/filterBar.css" rel="stylesheet" />
+<link href="../../styles/card.css" rel="stylesheet" />

@@ -2,12 +2,12 @@
         border-radius: 0;
     }
         .custom > li > a, .custom > li > span {
-            height: 45px;
-            font-size: 20px;
+            height: 35px;
+            font-size: 15px;
             color: whitesmoke;
             background-color: #4B515D;
             border: 1px solid gray;
-            margin-left: 10px;
+            margin-left: 5px;
         }
 
             .custom > li > a:hover {

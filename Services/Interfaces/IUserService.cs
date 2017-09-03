@@ -1,12 +1,16 @@
 ﻿using Models;
-using System.Collections.Generic;
+using Models.RequestModels;
 
 namespace Services.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<ApplicationUser> GetAllUsers();
+        UsersFilterResult GetAllUsers(UsersFilterCriteria criteria);
 
         ApplicationUser GetUserById(string userId);
+
+        RentalHistoriesResult GetUserRentalHistories(string userId, RentalHistoriesFilterCriteria criteria);
+
+        bool AddUserRentalHistory(string userId, Car car);
     }
 }

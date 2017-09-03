@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace WebAPITest.Models
+namespace WebAPITest.ViewModels.Account
 {
     // Models returned by AccountController actions.
 

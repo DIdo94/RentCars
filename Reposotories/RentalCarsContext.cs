@@ -12,7 +12,6 @@ namespace Data
         private IMongoCollection<Car> _cars;
         private IMongoCollection<Brand> _brands;
         private IMongoCollection<ApplicationUser> _users;
-        private IMongoCollection<RentalHistory> _rentalHistories;
 
         public RentalCarsContext()
         {

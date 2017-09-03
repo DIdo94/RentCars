@@ -1,0 +1,70 @@
+﻿<div class="wrapper">
+    <div class="row main">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">Login</h1>
+                <hr />
+            </div>
+        </div>
+        <div class="main-login main-center">
+            <form class="form-horizontal" name="loginForm" method="post" action="#">
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Email</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="email"
+                                   class="form-control"
+                                   name="email"
+                                   id="email"
+                                   ng-required="true"
+                                   placeholder="Enter your Email"
+                                   ng-model="user.email" />
+                        </div>
+                    </div>
+                    <div ng-show="!loginForm.email.$valid && loginForm.email.$dirty"
+                         class="red-text">
+                        Email is not correct
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password"
+                                   class="form-control"
+                                   name="password"
+                                   id="password"
+                                   placeholder="Enter your Password"
+                                   ng-minlength="6"
+                                   ng-maxlength="20"
+                                   required ng-model="user.password" />
+                        </div>
+                    </div>
+                    <div ng-show="loginForm.password.$error.required && loginForm.password.$dirty"
+                         class="red-text">
+                        Password is required
+                    </div>
+                    <div ng-show="(loginForm.password.$error.minlength || loginForm.password.$error.maxlength) &&
+                            loginForm.password.$dirty"
+                         class="red-text">
+                        Password should be between 6 and 20 characters
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button"
+                            class="btn btn-lg stylish-color login-button"
+                            ng-disabled="loginForm.$invalid"
+                            ng-click="ac.login(user)">
+                        Login
+                    </button>
+                </div>
+                <div class="login-register">
+                    <a ui-sref="register">Register</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

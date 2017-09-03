@@ -1,14 +1,16 @@
 ﻿using Models;
-using System.Collections.Generic;
+using Models.RequestModels;
 
 namespace Reposotories.Interfaces
 {
     public interface IApplicationUserManager
     {
-        IEnumerable<ApplicationUser> GetAllUsers();
+        UsersFilterResult GetAllUsers(UsersFilterCriteria criteria);
 
         ApplicationUser GetUserById(string userId);
 
-        bool AddRentalHistory(string userId, Car car);
+        bool AddUserRentalHistory(string userId, Car car);
+
+        RentalHistoriesResult GetUserRentalHistories(string userId, RentalHistoriesFilterCriteria criteria);
     }
 }

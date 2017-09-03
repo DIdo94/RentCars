@@ -1,28 +1,28 @@
-﻿<table st-table="rhc.rentals" class="table">
-    <thead >
+﻿<table st-table="rhc.rentalHistories" st-pipe="rhc.filter" class="table">
+    <thead>
         <tr style="background-color: lightgray">
-            <th st-sort="brand">Brand</th>
-            <th st-sort="model">Model</th>
-            <th st-sort="rentedFrom">Rented From</th>
-            <th st-sort="rentedUntil">Rented Until</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Rented From</th>
+            <th>Rented Until</th>
         </tr>
         <tr>
-            <th>
-                <input st-search="model" placeholder="Search for model" class="input-sm form-control" type="search" />
-            </th>
-            <th>
+            <th colspan="2">
                 <input st-search="brand" placeholder="Search for brand" class="input-sm form-control" type="search" />
             </th>
-            <th>
+            <th colspan="2">
                 <input st-search="model" placeholder="Search for model" class="input-sm form-control" type="search" />
             </th>
-            <th>
-                <input st-search="brand" placeholder="Search for brand" class="input-sm form-control" type="search" />
+            <!--<th>
+                <input st-search="rentedFrom" placeholder="Search for rented from" class="input-sm form-control" type="search" />
             </th>
+            <th>
+                <input st-search="rentedUntil" placeholder="Search for rented until" class="input-sm form-control" type="search" />
+            </th>-->
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="rent in rhc.rentals">
+        <tr ng-repeat="rent in rhc.rentalHistories">
             <td>{{rent.brand.name}}</td>
             <td>{{rent.model.name}}</td>
             <td>{{rent.rentedFrom | date:"MM/dd/yyyy h:mm "}}</td>
@@ -32,7 +32,7 @@
     <tfoot>
         <tr>
             <td colspan="4" class="text-center">
-                <div class="custom" st-pagination="" st-items-by-page="1" st-displayed-pages="3"></div>
+                <div class="custom" st-pagination="" st-items-by-page="10" st-displayed-pages="3"></div>
             </td>
         </tr>
     </tfoot>
@@ -51,12 +51,13 @@
     }
 
     .custom .pagination li > a, .custom .pagination > li > span {
-        height: 45px;
-        font-size: 20px;
+        height: 35px;
+        width: 35px;
+        font-size: 15px;
         color: whitesmoke;
         background-color: #4B515D;
         border: 1px solid gray;
-        margin-left: 10px;
+        margin-left: 5px;
     }
 
     .custom .pagination > li > a:hover {

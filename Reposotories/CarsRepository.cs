@@ -1,10 +1,11 @@
 ﻿using Data.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
 using Models;
+using Models.RequestModels;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
-using MongoDB.Bson;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Data
 {
@@ -21,6 +22,7 @@ namespace Data
             try
             {
                 car.Id = ObjectId.GenerateNewId().ToString();
+                car.Status = Status.Available;
                 _context.Cars.InsertOne(car);
                 return true;
             }
@@ -29,7 +31,7 @@ namespace Data
 
                 return false;
             }
-          
+
         }
 
         public bool EditCar(Car car)
@@ -40,8 +42,39 @@ namespace Data
 
         public IEnumerable<Car> GetAll()
         {
-            var cars = _context.Cars.AsQueryable().ToEnumerable();
-            return cars;
+            return _context.Cars.AsQueryable().ToEnumerable();
+
+        }
+
+        public CarsFilterResult GetAll(CarsFilterCrireria criteria)
+        {
+            IQueryable<Car> cars = _context.Cars.AsQueryable();
+            if (!string.IsNullOrEmpty(criteria.Brand?.Trim()))
+            {
+                // Case-insensitive string comparison is not supported as query string 
+                string brandToLower = criteria.Brand.Trim().ToLower();
+                cars = cars.Where(c => c.Brand.Name.ToLower().StartsWith(brandToLower));
+            }
+
+            if (!string.IsNullOrEmpty(criteria.Model?.Trim()))
+            {
+                string modelToLower = criteria.Model.Trim().ToLower();
+                cars = cars.Where(c => c.Model.Name.ToLower().StartsWith(modelToLower));
+            }
+
+            if (criteria.Status != Status.All)
+            {
+                cars = cars.Where(c => c.Status == criteria.Status);
+            }
+
+            int totalItems = cars.Count();
+            return new CarsFilterResult
+            {
+                Cars = cars.Skip((criteria.PageNumber - 1) * criteria.ItemsPerPage)
+                    .Take(criteria.ItemsPerPage)
+                    .AsEnumerable(),
+                TotalItems = totalItems
+            };
         }
 
         public IEnumerable<Brand> GetBrands()
@@ -51,7 +84,7 @@ namespace Data
 
         public Car GetById(string id)
         {
-            return _context.Cars.AsQueryable().FirstOrDefault(c => c.Id == id);
+            return _context.Cars.Find(c => c.Id == id).FirstOrDefault();
         }
 
         public bool RemoveCar(Car car)
@@ -63,10 +96,19 @@ namespace Data
         public bool RentCar(Car car)
         {
             car.RentedFrom = DateTime.Now;
-            var update = Builders<Car>.Update
+            UpdateDefinition<Car> update = Builders<Car>.Update
                .Set(c => c.RentedUntil, car.RentedUntil)
                .Set(c => c.RentedFrom, car.RentedFrom)
-               .Set(c => c.Status, car.Status);
+               .Set(c => c.Status, Status.Rented);
+            UpdateResult updateResult = _context.Cars.UpdateOne(model => model.Id == car.Id, update);
+            return updateResult.IsAcknowledged;
+        }
+
+        public bool SetCarStatusAvailable(Car car)
+        {
+            UpdateDefinition<Car> update = Builders<Car>.Update
+                .Set(c => c.Status, Status.Available)
+                .Set(c => c.RentedUntil, null);
             UpdateResult updateResult = _context.Cars.UpdateOne(model => model.Id == car.Id, update);
             return updateResult.IsAcknowledged;
         }

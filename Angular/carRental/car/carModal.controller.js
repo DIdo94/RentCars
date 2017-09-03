@@ -1,71 +1,65 @@
-﻿function RentModal(car, dbCars, currentUser, CarService, notification) {
+﻿function CarModalController(car, dbCars, currentUser, CarService, notification, filterCriteria, totalItems) {
     var vm = this;
     vm.car = {};
-    vm.statuses = [
-        {
-            "key": 0,
-            "value": "Rented"
-        },
-        {
-            "key": 1,
-            "value": "Available"
-        },
-        {
-            "key": 2,
-            "value": "Out of order"
-        }
-    ];
     if (car) {
         angular.copy(car, vm.car);
         vm.car.rentedUntil = null;
+        vm.car.numberOfDoors = car.numberOfDoors.toString();
     }
 
-    vm.status = vm.statuses[vm.car.status];
-
+    vm.status = vm.car.status;
     CarService.getAllBrands().success(function (data) {
         vm.brands = data;
     });
 
     vm.addCar = function (scope) {
-        vm.car.status = 1;
+        vm.car.numberOfDoors = parseInt(vm.car.numberOfDoors);
         CarService.addCar(vm.car).success(function () {
-            dbCars.push(vm.car);
+            filterCriteria.pageNumber = 1;
+            CarService.getAll(filterCriteria).success(function (data) {
+                CarService.setFilterCarsResult(data);
+            });
             notification.success('Car successfully added');
         }).error(function () {
             notification.error('Car not successfully added');
         });
 
         scope.closeThisDialog();
-    }
+    };
 
     vm.loadPicture = function (form) {
         if (form.car.image.$valid) {
 
         }
-    }
+    };
 
     vm.rentCar = function (scope) {
-        vm.car.rentedBy = currentUser;//.name;
-        vm.car.status = 0;
         vm.car.rentedFrom = new Date().toISOString();
         vm.car.rentedUntil = new Date(vm.car.rentedUntil).toISOString();
         CarService.rent(vm.car).success(function () {
-            angular.copy(vm.car, car);
+            filterCriteria.pageNumber = 1;
+            CarService.getAll(filterCriteria).success(function (data) {
+                CarService.setFilterCarsResult(data);
+            });
             notification.success('Successfully rented');
         }).error(function () {
             notification.error('Not successfully rented');
         });
+
         scope.closeThisDialog();
     };
 
     vm.editCar = function (scope) {
-        vm.car.status = vm.status.key;
+        vm.car.numberOfDoors = parseInt(vm.car.numberOfDoors);
         CarService.editCar(vm.car).success(function () {
-            angular.copy(vm.car, car);
+            CarService.getAll(filterCriteria).success(function (data) {
+                CarService.setFilterCarsResult(data);
+            });
             notification.success('Successfully edited');
         }).error(function () {
             notification.error('Not successfully edited');
         });
+
         scope.closeThisDialog();
     };
 
@@ -74,14 +68,16 @@
             return item.id;
         }).indexOf(car.id);
         CarService.removeCar(car.id).success(function () {
-            dbCars.splice(dbCar, 1);
+            CarService.getAll(filterCriteria).success(function (data) {
+                CarService.setFilterCarsResult(data);
+            });
             notification.success('Successfully removed');
         }).error(function () {
             notification.error('Not successfully removed');
         });
 
         scope.closeThisDialog();
-    }
+    };
 
     vm.startDateBeforeRender = function ($dates, $view) {
         var activeDate = moment().subtract(1, $view).add(1, 'm');
@@ -90,11 +86,11 @@
         }).forEach(function (date) {
             date.selectable = false;
         });
-    }
+    };
+
     vm.onTimeSet = function (newDate, oldDate) {
         vm.car.rentedUntil = moment(vm.car.rentedUntil).format("YYYY-MM-DDTHH:mm:ss");
-        //vm.car.rentedUntil = moment(vm.car.rentedUntil).format("MM-DD-YYYY, h:mm:ss A");
-    }
+    };
 
     return vm;
 }

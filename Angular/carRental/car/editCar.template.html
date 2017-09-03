@@ -1,0 +1,66 @@
+﻿<h1>Edit car</h1>
+<div>
+    <form name="editCarForm">
+        <div class="form-group">
+            <label for="brand">Brand</label>
+            <select class="form-control"
+                    name="repeatSelect"
+                    id="repeatSelect"
+                    ng-model="vm.car.brand"
+                    ng-options="brand.name for brand in vm.brands track by brand.id"></select>
+        </div>
+        <div class="form-group">
+            <label for="model">Model</label>
+            <select class="form-control"
+                    name="repeatSelect2"
+                    id="repeatSelect2"
+                    ng-model="vm.car.model"
+                    ng-options="model.name for model in vm.car.brand.models track by model.id"></select>
+        </div>
+        <div class="form-group">
+            <label for="numberOfDoors">Number of doors</label>
+            <select name="numberOfDoors"
+                    id="numberOfDoors"
+                    required
+                    class="form-control"
+                    placeholder="Number of doors"
+                    ng-model="vm.car.numberOfDoors">
+                <option value="2">2(3)</option>
+                <option value="4">4(5)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="numberOfSeats">Number of seats</label>
+            <input type="number"
+                   required
+                   class="form-control"
+                   id="numberOfSeats"
+                   name="numberOfSeats"
+                   ng-min="2"
+                   ng-max="8"
+                   placeholder="Number of seats" ng-model="vm.car.numberOfSeats">
+            <span class="red-text" ng-show="editCarForm.numberOfSeats.$error.min || editCarForm.numberOfSeats.$error.max">
+                Number of seats must be between 2 and 8
+            </span>
+        </div>
+        <div class="form-group">
+            <label for="image">Image(from URL)</label>
+            <input type="url"
+                   required
+                   class="form-control"
+                   id="imageUrl"
+                   placeholder="Image"
+                   ng-model="vm.car.imageUrl"
+                   ng-blur="loadPicture(addCarForm)" />
+        </div>
+        <div class="form-group">
+            <img width="300" height="300" ng-src="{{vm.car.imageUrl}}" />
+        </div>
+        <button type="submit"
+                ng-disabled="editCarForm.$invalid || editCarForm.$pristine"
+                ng-click="vm.editCar(this)" class="btn btn-default">
+            Edit
+        </button>
+    </form>
+</div>
+

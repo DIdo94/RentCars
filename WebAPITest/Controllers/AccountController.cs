@@ -12,7 +12,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using WebAPITest.Models;
 using WebAPITest.Providers;
 using WebAPITest.Results;
 using Microsoft.AspNet.SignalR;
@@ -21,6 +20,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Models;
 using Data;
+using WebAPITest.ViewModels.Account;
 
 namespace WebAPITest.Controllers
 {
@@ -261,7 +261,7 @@ namespace WebAPITest.Controllers
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName, user.Roles);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
             else
@@ -331,7 +331,8 @@ namespace WebAPITest.Controllers
                 UserName = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                ImageUrl = model.ImageUrl
+                ImageUrl = model.ImageUrl,
+                RentalHistories = new List<RentalHistory>()
             };
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -339,6 +340,7 @@ namespace WebAPITest.Controllers
                 return GetErrorResult(result);
             }
 
+            UserManager.AddToRole(user.Id, "User");
             var userObject = JsonConvert.SerializeObject(user, new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
@@ -364,7 +366,7 @@ namespace WebAPITest.Controllers
                 return InternalServerError();
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            ApplicationUser user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user);
             if (!result.Succeeded)

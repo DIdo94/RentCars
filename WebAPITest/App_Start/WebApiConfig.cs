@@ -1,10 +1,8 @@
-﻿using System.Web.Http;
+﻿using LightInject;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
-using LightInject;
-using Newtonsoft.Json;
-using Microsoft.AspNet.SignalR;
-using WebAPITest.Controllers;
+using Services.Interfaces;
+using System.Web.Http;
 
 namespace WebAPITest
 {
@@ -14,7 +12,6 @@ namespace WebAPITest
         {
             var jsonSerializerSettings = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings;
             jsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
 
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.

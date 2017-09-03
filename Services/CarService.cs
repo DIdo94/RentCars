@@ -3,6 +3,7 @@ using Models;
 using Services.Interfaces;
 using System.Collections.Generic;
 using System;
+using Models.RequestModels;
 
 namespace Services
 {
@@ -35,6 +36,11 @@ namespace Services
             return _carReposotory.GetAll();
         }
 
+        public CarsFilterResult GetAllCars(CarsFilterCrireria criteria)
+        {
+            return _carReposotory.GetAll(criteria);
+        }
+
         public Car GetCarById(string id)
         {
             return _carReposotory.GetById(id);
@@ -48,6 +54,11 @@ namespace Services
         public bool RentCar(Car car)
         {
             return _carReposotory.RentCar(car);
+        }
+
+        public bool SetCarStatusAvailable(Car car)
+        {
+            return _carReposotory.SetCarStatusAvailable(car);
         }
     }
 }

@@ -1,19 +1,15 @@
-﻿using Data;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Client.Http;
 using Models;
-using MongoDB.Bson;
+using Models.RequestModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Services;
 using Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Web.Http;
 using WebAPITest.Hubs;
-using WebAPITest.ViewModels;
+using WebAPITest.ViewModels.Car;
 
 namespace WebAPITest.Controllers
 {
@@ -23,59 +19,37 @@ namespace WebAPITest.Controllers
     {
         private readonly ICarService _carService;
         private readonly IHubContext _carHub;
-        private IRentalHistoryService _rentalHistoryService;
+        private IUserService _userService;
 
-        public CarsController()
-        {
-
-        }
-
-        public CarsController(ICarService carService)
+        public CarsController(ICarService carService, IUserService userService)
         {
             _carService = carService;
-            //_rentalHistoryService = rentalHistoryService;          
+            _userService = userService;
             _carHub = GlobalHost.ConnectionManager.GetHubContext<CarHub>();
         }
 
-        public IRentalHistoryService RentalHistoryService
-        {
-            get
-            {
-                return _rentalHistoryService ?? new RentalHistoryService(Request.GetOwinContext().GetUserManager<ApplicationUserManager>());
-            }
-            private set
-            {
-                _rentalHistoryService = value;
-            }
-        }
-
         [HttpGet]
-        public IHttpActionResult Index()
+        public IHttpActionResult GetAllCars([FromUri]CarsFilterCrireria criteria)
         {
-            var cars = _carService.GetAllCars();
+            CarsFilterResult cars = _carService.GetAllCars(criteria);
             return Ok(cars);
         }
 
         [Route("rent/{carId}")]
         [HttpPut]
-        public IHttpActionResult RentCar([FromUri]string carId, [FromBody]CarRentViewModel car)
+        public IHttpActionResult RentCar([FromUri]string carId, [FromBody]CarRentViewModel carViewModel)
         {
-            Car dbCar = _carService.GetCarById(carId);
-            if (dbCar == null)
+            Car car = _carService.GetCarById(carId);
+            if (car == null)
             {
                 return BadRequest();
             }
 
-            dbCar.RentedUntil = car.RentedUntil;
-            dbCar.Status = car.Status;
-            if (_carService.RentCar(dbCar))
+            car.RentedUntil = carViewModel.RentedUntil;
+            if (_carService.RentCar(car))
             {
-                if (!RentalHistoryService.AddRentalHistory(User.Identity.GetUserId(), dbCar))
-                {
-                    return BadRequest();
-                }
-
-                string carObject = JsonConvert.SerializeObject(dbCar, new JsonSerializerSettings
+                _userService.AddUserRentalHistory(User.Identity.GetUserId(), car);
+                string carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
@@ -95,6 +69,7 @@ namespace WebAPITest.Controllers
             return Ok(brands);
         }
 
+        [System.Web.Http.Authorize(Roles = Roles.ADMIN)]
         [HttpPost]
         public IHttpActionResult AddCar([FromBody]CarAddViewModel carViewModel)
         {
@@ -104,8 +79,7 @@ namespace WebAPITest.Controllers
                 Brand = carViewModel.Brand,
                 ImageUrl = carViewModel.ImageUrl,
                 NumberOfDoors = carViewModel.NumberOfDoors,
-                NumberOfSeats = carViewModel.NumberOfSeats,
-                Status = carViewModel.Status
+                NumberOfSeats = carViewModel.NumberOfSeats
             };
             if (_carService.AddCar(car))
             {
@@ -120,6 +94,7 @@ namespace WebAPITest.Controllers
             return BadRequest();
         }
 
+        [System.Web.Http.Authorize(Roles = Roles.ADMIN)]
         [Route("{carId}")]
         [HttpPut]
         public IHttpActionResult EditCar([FromUri]string carId, [FromBody]CarEditViewModel carViewModel)
@@ -135,7 +110,6 @@ namespace WebAPITest.Controllers
             car.ImageUrl = carViewModel.ImageUrl;
             car.NumberOfDoors = carViewModel.NumberOfDoors;
             car.NumberOfSeats = carViewModel.NumberOfSeats;
-            car.Status = carViewModel.Status;
             if (_carService.EditCar(car))
             {
                 var carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
@@ -149,6 +123,7 @@ namespace WebAPITest.Controllers
             return BadRequest();
         }
 
+        [System.Web.Http.Authorize(Roles = Roles.ADMIN)]
         [Route("{carId}")]
         [HttpDelete]
         public IHttpActionResult RemoveCar([FromUri] string carId)

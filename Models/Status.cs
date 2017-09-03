@@ -4,6 +4,7 @@
     {
         Rented,
         Available,
-        OutOfService
+        OutOfService,
+        All
     }
 }

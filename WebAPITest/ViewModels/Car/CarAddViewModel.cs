@@ -1,14 +1,12 @@
 ﻿using Models;
 
-namespace WebAPITest.ViewModels
+namespace WebAPITest.ViewModels.Car
 {
     public class CarAddViewModel
     {
         public Brand Brand { get; set; }
 
         public Model Model { get; set; }
-
-        public Status Status { get; set; }
 
         public City City { get; set; }
 

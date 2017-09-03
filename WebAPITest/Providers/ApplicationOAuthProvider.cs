@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using Data;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using WebAPITest.Models;
-using System.Web.Http.Cors;
 using Models;
-using Data;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace WebAPITest.Providers
 {
-    [EnableCors(origins: "http://localhost:63409/", headers: "*", methods: "*")]
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
@@ -30,10 +27,8 @@ namespace WebAPITest.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-
+            ApplicationUserManager userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
             ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
-
             if (user == null)
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
@@ -44,9 +39,15 @@ namespace WebAPITest.Providers
                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
+            AuthenticationProperties properties = CreateProperties(user.UserName, user.Roles);
+            oAuthIdentity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+            if (await userManager.IsInRoleAsync(user.Id, "Admin"))
+            {
+                oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+            }
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
+            context.Response.Cookies.Append("Token", context.Options.AccessTokenFormat.Protect(ticket));
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
         }
@@ -77,7 +78,6 @@ namespace WebAPITest.Providers
             if (context.ClientId == _publicClientId)
             {
                 Uri expectedRootUri = new Uri(context.Request.Uri, "/");
-
                 if (expectedRootUri.AbsoluteUri == context.RedirectUri)
                 {
                     context.Validated();
@@ -87,11 +87,12 @@ namespace WebAPITest.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userName)
+        public static AuthenticationProperties CreateProperties(string userName, List<string> roles)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }
+                { "userName", userName },
+                { "roles", string.Join(",", roles) }
             };
             return new AuthenticationProperties(data);
         }

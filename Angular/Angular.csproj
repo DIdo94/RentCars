@@ -66,18 +66,17 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="carRental\carDetails\carDetails.controller.js" />
-    <Content Include="carRental\carDetails\carDetails.template.html" />
-    <Content Include="carRental\car\addCarTemplate.html" />
-    <Content Include="carRental\car\editCarTemplate.html" />
-    <Content Include="carRental\car\modalController.js" />
-    <Content Include="carRental\car\removeCarTemplate.html" />
-    <Content Include="carRental\car\rentModal.html" />
+    <Content Include="carRental\car\addCar.template.html" />
+    <Content Include="carRental\car\editCar.template.html" />
+    <Content Include="carRental\car\carModal.controller.js" />
+    <Content Include="carRental\car\removeCar.template.html" />
+    <Content Include="carRental\car\rentCar.template.html" />
+    <Content Include="carRental\shared\factories\authFactory.js" />
     <Content Include="carRental\shared\services\carService.js" />
     <Content Include="carRental\shared\templates\paginationTemplate.html" />
-    <Content Include="carRental\user\login.template.html" />
-    <Content Include="carRental\user\userController.controller.js" />
-    <Content Include="carRental\user\register.template.html" />
+    <Content Include="carRental\auth\login.template.html" />
+    <Content Include="carRental\auth\authController.controller.js" />
+    <Content Include="carRental\auth\register.template.html" />
     <Content Include="carRental\shared\services\userService.js" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="packages.config" />
@@ -88,6 +87,7 @@
     <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="carRental\main\main.template.html" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -107,25 +107,27 @@
     <Content Include="carRental\app.js" />
     <Content Include="carRental\car\car.controller.js" />
     <Content Include="carRental\car\car.template.html" />
-    <Content Include="carRental\renter\renter.controller.js" />
-    <Content Include="carRental\renter\renter.template.html" />
+    <Content Include="carRental\user\user.controller.js" />
+    <Content Include="carRental\user\user.template.html" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\stPipe.js" />
+    <Content Include="styles\card.css" />
     <Content Include="styles\customPaging.css" />
+    <Content Include="styles\filterBar.css" />
     <Content Include="styles\main.css" />
+    <Content Include="styles\one-page-wonder.css" />
     <Content Include="styles\register.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="login\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
