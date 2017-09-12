@@ -22,7 +22,7 @@
     var usersfilterCriteria = {
         firstName: '',
         lastName: '',
-        itemsPerPage: 1,
+        itemsPerPage: 4,
         pageNumber: 1
     };
 

@@ -11,7 +11,7 @@
         brand: '',
         model: '',
         pageNumber: 1,
-        itemsPerPage: 3,
+        itemsPerPage: 4,
         status: 'Available'
     };
 
