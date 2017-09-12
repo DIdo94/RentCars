@@ -1,4 +1,4 @@
-﻿function CarModalController(car, dbCars, currentUser, CarService, notification, filterCriteria, totalItems) {
+﻿function CarModalController(car, dbCars, currentUser, CarService, notification, filterCriteria, totalItems, Upload) {
     var vm = this;
     vm.car = {};
     if (car) {
@@ -27,9 +27,11 @@
         scope.closeThisDialog();
     };
 
-    vm.loadPicture = function (form) {
-        if (form.car.image.$valid) {
-
+    vm.loadPhoto = function (file) {
+        if (file) {
+            Upload.base64DataUrl(file).then(function (base64Image) {
+                vm.car.mainImage = base64Image;
+            });          
         }
     };
 

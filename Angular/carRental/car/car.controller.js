@@ -1,6 +1,5 @@
 ﻿(function () {
-    function CarsController($state, $scope, ngDialog, $cookies, data, CarService, AuthFactory, Notification, Hub) {
-        debugger;
+    function CarsController($state, $scope, ngDialog, $cookies, data, CarService, AuthFactory, Notification, Hub, Upload) {
         var controller = this;
         var roles = AuthFactory.getUserRoles();
         controller.cars = [];
@@ -8,7 +7,7 @@
             brand: '',
             model: '',
             pageNumber: 1,
-            itemsPerPage: 3,
+            itemsPerPage: 4,
             status: 'Available'
         };
         controller.filterCriteria = filterCriteria;
@@ -90,7 +89,7 @@
 
         var modalOptions = {
             template: '',
-            controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', 'filterCriteria', 'totalItems', CarModalController],
+            controller: ['car', 'cars', 'currentUser', 'CarService', 'Notification', 'filterCriteria', 'totalItems','Upload', CarModalController],
             className: 'ngdialog-theme-default',
             controllerAs: 'vm',
             showClose: false,
@@ -102,7 +101,10 @@
                 CarService: function () { return CarService; },
                 notification: function () { return Notification; },
                 filterCriteria: function () { return controller.filterCriteria; },
-                totalItems: function () { return controller.totalItems; }
+                totalItems: function () { return controller.totalItems; },
+                Upload: function () {
+                    return Upload;
+                }
             }
         };
 
@@ -145,6 +147,6 @@
 
         return controller;
     }
-    angular.module('carRental.cars', ['carRental.rentalHistory', 'ngCookies', 'ui.bootstrap.tpls'])
+    angular.module('carRental.cars', ['carRental.rentalHistory', 'ngCookies', 'ui.bootstrap.tpls', 'ngFileUpload'])
         .controller('CarsController', CarsController);
 })();

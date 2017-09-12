@@ -1,21 +1,27 @@
 ﻿using Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPITest.ViewModels.Car
 {
     public class CarEditViewModel
     {
-        public string Id { get; set; }
-
+        [Required]
         public Brand Brand { get; set; }
 
+        [Required]
         public Model Model { get; set; }
 
         public City City { get; set; }
 
+        [Required]
+        [Range(2,4)]
         public int NumberOfDoors { get; set; }
 
+        [Required]
+        [Range(1,8)]
         public int NumberOfSeats { get; set; }
 
-        public string ImageUrl { get; set; }
+        [Required]
+        public string MainImage { get; set; }
     }
 }

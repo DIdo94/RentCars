@@ -21,7 +21,7 @@
                                    ng-minlength="2"
                                    ng-maxlength="50"
                                    ng-required="true"
-                                   ng-model="user.firstName" />
+                                   ng-model="ac.user.firstName" />
                         </div>
                     </div>
                     <div ng-show="registerForm.firstName.$error.required && registerForm.firstName.$dirty"
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="lastName" class="cols-sm-2 control-label">First Name</label>
+                    <label for="lastName" class="cols-sm-2 control-label">Last Name</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -44,10 +44,10 @@
                                    name="lastName"
                                    id="lastName"
                                    placeholder="Enter your last name"
-                                   ng-minlength="5"
+                                   ng-minlength="2"
                                    ng-maxlength="50"
                                    ng-required="true"
-                                   ng-model="user.lastName" />
+                                   ng-model="ac.user.lastName" />
                         </div>
                     </div>
                     <div ng-show="registerForm.lastName.$error.required && registerForm.lastName.$dirty"
@@ -57,7 +57,7 @@
                     <div ng-show="registerForm.lastName.$dirty &&
                             (registerForm.lastName.$error.minlength || registerForm.lastName.$error.maxlength)"
                          class="red-text">
-                        Last name should be between 5 and 50 characters
+                        Last name should be between 2 and 50 characters
                     </div>
                 </div>
                 <div class="form-group">
@@ -71,7 +71,7 @@
                                    id="email" 
                                    placeholder="Enter your Email" 
                                    ng-required="true" 
-                                   ng-model="user.email" />
+                                   ng-model="ac.user.email" />
                         </div>
                     </div>
                     <div ng-show="registerForm.email.$dirty && !registerForm.email.$valid"
@@ -92,7 +92,7 @@
                                    ng-minlength="6" 
                                    ng-maxlength="20" 
                                    ng-required="true" 
-                                   ng-model="user.password" />
+                                   ng-model="ac.user.password" />
                         </div>
                     </div>
                     <div ng-show="registerForm.password.$dirty && registerForm.password.$error.required"
@@ -116,34 +116,47 @@
                                    id="confirm"
                                    placeholder="Confirm your Password"
                                    required
-                                   ng-model="user.confirmPassword"
-                                   compare-to="user.password" />
+                                   ng-model="ac.user.confirmPassword"
+                                   compare-to="ac.user.password" />
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="imageUrl" class="cols-sm-2 control-label">Image url</label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="url"
-                                   class="form-control"
-                                   name="imageUrl"
-                                   id="imageUrl"
-                                   placeholder="Enter a valid image url"
-                                   required
-                                   ng-model="user.imageUrl" />
-                        </div>
-                    </div>
+                    <label for="imageUrl" class="cols-sm-2 control-label">Image</label>
+                    <button ng-required="false"
+                            type="button" 
+                            class="button form-control"
+                            ngf-select="ac.loadPhoto(file)"
+                            ng-model="file"
+                            name="file"
+                            ngf-multiple="false"
+                            ngf-pattern="'image/*'"
+                            ngf-accept="'image/*'"
+                            ngf-max-size="6MB"
+                            ngf-min-height="100">
+                        Select an image
+                    </button>
+                    <div 
+                        ng-required="false"
+                        ngf-drop="ac.loadPhoto(file)" 
+                        ng-model="file" 
+                        ngf-drag-over-class="'dragover'" 
+                        ngf-multiple="false"
+                        ngf-pattern="'image/*'"
+                        ngf-accept="'image/*'"
+                        ngf-max-size="6MB"
+                        ngf-min-height="100"
+                        class="drop-box">
+                    Or drop it here</div>
                 </div>
                 <div class="form-group">
-                    <img width="300" height="300" ng-src="{{user.imageUrl}}" />
+                    <img width="200" height="200" ngf-thumbnail="ac.user.profileImage">
                 </div>
                 <div class="form-group">
                     <button type="button"
                             class="btn stylish-color btn-lg login-button"
-                            ng-disabled="registerForm.$invalid"
-                            ng-click="ac.register(user)">
+                            ng-disabled="registerForm.$invalid || !ac.user.profileImage"
+                            ng-click="ac.register(ac.user)">
                         Register
                     </button>
                 </div>

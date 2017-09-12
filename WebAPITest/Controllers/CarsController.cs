@@ -45,17 +45,22 @@ namespace WebAPITest.Controllers
                 return BadRequest();
             }
 
-            car.RentedUntil = carViewModel.RentedUntil;
-            if (_carService.RentCar(car))
+            if (ModelState.IsValid)
             {
-                _userService.AddUserRentalHistory(User.Identity.GetUserId(), car);
-                string carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
+                car.RentedUntil = carViewModel.RentedUntil;
+                if (_carService.RentCar(car))
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-                _carHub.Clients.All.carUpdated(carObject);
+                    _userService.AddUserRentalHistory(User.Identity.GetUserId(), car);
+                    string carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
+                    {
+                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    });
+                    _carHub.Clients.All.carUpdated(carObject);
 
-                return Ok();
+                    return Ok();
+                }
+
+                return BadRequest();
             }
 
             return BadRequest();
@@ -73,25 +78,30 @@ namespace WebAPITest.Controllers
         [HttpPost]
         public IHttpActionResult AddCar([FromBody]CarAddViewModel carViewModel)
         {
-            Car car = new Car()
+            if (ModelState.IsValid)
             {
-                Model = carViewModel.Model,
-                Brand = carViewModel.Brand,
-                ImageUrl = carViewModel.ImageUrl,
-                NumberOfDoors = carViewModel.NumberOfDoors,
-                NumberOfSeats = carViewModel.NumberOfSeats
-            };
-            if (_carService.AddCar(car))
-            {
-                string carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
+                Car car = new Car()
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-                _carHub.Clients.All.carAdded(carObject);
-                return Ok();
+                    Model = carViewModel.Model,
+                    Brand = carViewModel.Brand,
+                    MainImage = carViewModel.MainImage,
+                    NumberOfDoors = carViewModel.NumberOfDoors,
+                    NumberOfSeats = carViewModel.NumberOfSeats
+                };
+                if (_carService.AddCar(car))
+                {
+                    string carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
+                    {
+                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    });
+                    _carHub.Clients.All.carAdded(carObject);
+                    return Ok();
+                }
+
+                return BadRequest();
             }
 
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         [System.Web.Http.Authorize(Roles = Roles.ADMIN)]
@@ -99,28 +109,33 @@ namespace WebAPITest.Controllers
         [HttpPut]
         public IHttpActionResult EditCar([FromUri]string carId, [FromBody]CarEditViewModel carViewModel)
         {
-            Car car = _carService.GetCarById(carViewModel.Id);
+            Car car = _carService.GetCarById(carId);
             if (car == null)
             {
                 return BadRequest();
             }
 
-            car.Model = carViewModel.Model;
-            car.Brand = carViewModel.Brand;
-            car.ImageUrl = carViewModel.ImageUrl;
-            car.NumberOfDoors = carViewModel.NumberOfDoors;
-            car.NumberOfSeats = carViewModel.NumberOfSeats;
-            if (_carService.EditCar(car))
+            if (ModelState.IsValid)
             {
-                var carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
+                car.Model = carViewModel.Model;
+                car.Brand = carViewModel.Brand;
+                car.MainImage = carViewModel.MainImage;
+                car.NumberOfDoors = carViewModel.NumberOfDoors;
+                car.NumberOfSeats = carViewModel.NumberOfSeats;
+                if (_carService.EditCar(car))
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-                _carHub.Clients.All.carUpdated(carObject);
-                return Ok();
+                    var carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
+                    {
+                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    });
+                    _carHub.Clients.All.carUpdated(carObject);
+                    return Ok();
+                }
+
+                return BadRequest();
             }
 
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         [System.Web.Http.Authorize(Roles = Roles.ADMIN)]

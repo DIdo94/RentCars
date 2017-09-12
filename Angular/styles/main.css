@@ -17,3 +17,23 @@ body {
 .main-navbar {
     font-weight: 500;
 }
+
+.drop-box {
+    text-align: center;
+    padding: 20px;
+    border: 4px dashed gray;
+}
+
+.dragover {
+    background-color: lightgray;
+}
+
+.day.active, .hour.active, .minute.active {
+    background-image: none;
+    background-color: #4B515D !important;
+}
+
+    .day.active:hover, .hour.active:hover, .minute.active:hover {
+        background-image: none;
+        background-color: gray !important;
+    }

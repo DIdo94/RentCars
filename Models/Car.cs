@@ -41,7 +41,7 @@ namespace Models
         [BsonElement("rentedUntil")]
         public DateTime? RentedUntil { get; set; }
 
-        [BsonElement("imageUrl")]
-        public string ImageUrl { get; set; }
+        [BsonElement("mainImage")]
+        public string MainImage { get; set; }
     }
 }

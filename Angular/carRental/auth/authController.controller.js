@@ -1,5 +1,5 @@
 ﻿(function () {
-    function AuthController($scope, $state, $cookies, Notification, UserService, AuthFactory) {
+    function AuthController($scope, $state, $cookies, Notification, UserService, AuthFactory, Upload) {
         $scope.isLogged = function () {
             if ($cookies.getObject('user') && (new Date($cookies.getObject('user')['.expires']) > new Date())) {
                 return true;
@@ -23,9 +23,19 @@
         var controller = this;
         controller.login = AuthFactory.login;
         controller.register = AuthFactory.register;
+        controller.user = {};
         $scope.$on('isLogged', function () {
             $state.go('cars');
         });
+
+        controller.loadPhoto = function (file) {
+            debugger;
+            if (file) {
+                Upload.base64DataUrl(file).then(function (base64Image) {
+                    controller.user.profileImage = base64Image;
+                });
+            }
+        };
 
         $scope.isAdmin = function () {
             return roles.includes('Admin');
@@ -55,8 +65,8 @@
     };
 
 
-    angular.module('carRental.auth', ['ui.router', 'ngCookies'])
+    angular.module('carRental.auth', ['ui.router', 'ngCookies', 'ngFileUpload'])
         .controller('AuthController',
-            ['$scope', '$state', '$cookies', 'Notification', 'UserService', 'AuthFactory', AuthController])
+            ['$scope', '$state', '$cookies', 'Notification', 'UserService', 'AuthFactory', 'Upload', AuthController])
         .directive("compareTo", compareTo);
 })();

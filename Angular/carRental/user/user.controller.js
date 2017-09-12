@@ -6,7 +6,7 @@
         var filterCriteria = {
             firstName: '',
             lastName: '',
-            itemsPerPage: 1,
+            itemsPerPage: 4,
             pageNumber: 1
         };
         vm.filterCriteria = filterCriteria;

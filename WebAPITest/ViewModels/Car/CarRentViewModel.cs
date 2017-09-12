@@ -1,10 +1,11 @@
-﻿using Models;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPITest.ViewModels.Car
 {
     public class CarRentViewModel
     {
-        public DateTime? RentedUntil { get; set; }
+        [Required]
+        public DateTime RentedUntil { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace WebAPITest.ViewModels.Account
@@ -38,10 +37,6 @@ namespace WebAPITest.ViewModels.Account
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        //[Required]
-        //[Display(Name = "Email")]
-        //public string Email { get; set; }
-
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -51,8 +46,8 @@ namespace WebAPITest.ViewModels.Account
         public string LastName { get; set; }
 
         [Required]
-        [Display(Name = "Image URL")]
-        public string ImageUrl { get; set; }
+        [Display(Name = "Profile Image")]
+        public string ProfileImage { get; set; }
 
         //[Required]
         //[Display(Name = "Date of birth")]

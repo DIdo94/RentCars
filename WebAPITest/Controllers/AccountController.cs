@@ -325,13 +325,13 @@ namespace WebAPITest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser()
+            ApplicationUser user = new ApplicationUser()
             {
                 Email = model.Email,
                 UserName = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                ImageUrl = model.ImageUrl,
+                ProfileImage = model.ProfileImage,
                 RentalHistories = new List<RentalHistory>()
             };
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
@@ -341,7 +341,7 @@ namespace WebAPITest.Controllers
             }
 
             UserManager.AddToRole(user.Id, "User");
-            var userObject = JsonConvert.SerializeObject(user, new JsonSerializerSettings
+            string userObject = JsonConvert.SerializeObject(user, new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });

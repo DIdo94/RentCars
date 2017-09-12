@@ -12,6 +12,7 @@
     };
 
     factory.register = function (user) {
+        debugger;
         UserService.register(user).success(function () {
             Notification.success('Successfully registered');
             factory.login(user);

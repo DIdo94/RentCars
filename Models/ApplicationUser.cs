@@ -17,7 +17,7 @@ namespace Models
         [BsonIgnoreIfNull]
         public DateTime DateOfBirth { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string ProfileImage { get; set; }
 
         public ICollection<RentalHistory> RentalHistories { get; set; }
 

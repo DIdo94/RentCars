@@ -51,7 +51,6 @@
                     templateUrl: 'carRental/rentalHistory/rentalHistory.template.html',
                     resolve: {
                         data: function (UserService, $stateParams) {
-                            debugger;
                             return UserService.getUserRentalHistories($stateParams.id).then(function (data) {
                                 return data.data;
                             }, function () {

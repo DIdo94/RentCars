@@ -42,10 +42,11 @@
             email: user.email,
             password: user.password,
             confirmPassword: user.confirmPassword,
-            imageUrl: user.imageUrl,
+            profileImage: user.profileImage,
             firstName: user.firstName,
             lastName: user.lastName
         });
+
         return $http(request);
     };
 
@@ -88,7 +89,6 @@
             $.extend(mergedCriteria, additionalFilterCriteria);
         }
 
-        debugger;
         getCollectionRequest.url = `http://localhost:61818/api/users/${userId}/rentalHistories`;
         getCollectionRequest.params = mergedCriteria;
         return $http(getCollectionRequest);
