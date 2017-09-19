@@ -38,11 +38,11 @@
                 'carAdded': function (dbCar) {
                     var parsedCar = JSON.parse(dbCar);
                     if (matchCriteria(parsedCar)) {
+                        controller.totalItems += 1;
                         if (controller.totalItems % controller.filterCriteria.itemsPerPage) {
                             controller.cars.push(parsedCar);
                         }
 
-                        controller.totalItems += 1;
                         $scope.$apply();
                     }
                 },
