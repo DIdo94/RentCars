@@ -35,7 +35,7 @@
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("MaintainabilityRules", "SA1403", Justification = "One source file")]
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("DocumentationRules", "SA1649", Justification = "One source file")]
 
-namespace WebAPITest.LightInject
+namespace CarRental.WebApi.LightInject
 {
     using System;
     using System.Collections.Concurrent;

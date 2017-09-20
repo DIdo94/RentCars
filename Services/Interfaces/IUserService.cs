@@ -1,7 +1,7 @@
-﻿using Models;
-using Models.RequestModels;
+﻿using CarRental.Models;
+using CarRental.Models.RequestModels;
 
-namespace Services.Interfaces
+namespace CarRental.Services.Interfaces
 {
     public interface IUserService
     {

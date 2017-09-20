@@ -1,14 +1,14 @@
 ﻿using AspNet.Identity.MongoDB;
-using Data;
-using Data.Interfaces;
+using CarRental.Data;
+using CarRental.Data.Interfaces;
+using CarRental.Models;
+using CarRental.Services;
+using CarRental.Services.Interfaces;
 using LightInject;
-using Models;
 using Newtonsoft.Json;
 using Reposotories.Interfaces;
-using Services;
-using Services.Interfaces;
 
-namespace WebAPITest
+namespace CarRental.WebApi
 {
     internal class LightInjectConfig : ICompositionRoot
     {
@@ -19,10 +19,10 @@ namespace WebAPITest
             settings.ContractResolver = new SignalRContractResolver();
             var serializer = JsonSerializer.Create(settings);
             serviceRegistry.Register<ICarRepository, CarsRepository>();
-            serviceRegistry.Register<IUserService, UserService>();
             serviceRegistry.Register<ICarService, CarService>();
             serviceRegistry.RegisterConstructorDependency<IApplicationUserManager>((factory, parameterInfo) =>
                 new ApplicationUserManager(new UserStore<ApplicationUser>(_context.Users)));
+            serviceRegistry.Register<IUserService, UserService>();
         }
     }
 }

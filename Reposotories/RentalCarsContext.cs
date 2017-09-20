@@ -1,9 +1,9 @@
-﻿using Models;
+﻿using CarRental.Models;
 using MongoDB.Driver;
 using System;
 using System.Configuration;
 
-namespace Data
+namespace CarRental.Data
 {
     public class RentalCarsContext : IDisposable
     {

@@ -1,9 +1,9 @@
-﻿using Models;
-using Models.RequestModels;
+﻿using CarRental.Models;
+using CarRental.Models.RequestModels;
+using CarRental.Services.Interfaces;
 using Reposotories.Interfaces;
-using Services.Interfaces;
 
-namespace Services
+namespace CarRental.Services
 {
     public class UserService : IUserService
     {

@@ -1,25 +1,25 @@
-﻿using Models;
-using Models.RequestModels;
-using Reposotories.Interfaces;
+﻿using CarRental.Models;
+using CarRental.Models.RequestModels;
+using CarRental.Services.Interfaces;
 using System.Web.Http;
 
-namespace WebAPITest.Controllers
+namespace CarRental.WebApi.Controllers
 {
     [RoutePrefix("api/users")]
     [Authorize(Roles = Roles.ADMIN)]
     public class UsersController : ApiController
     {
-        private IApplicationUserManager _userManager;
-
-        public UsersController(IApplicationUserManager userManager)
+        private IUserService _userService;
+        
+        public UsersController(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpGet]
-        public IHttpActionResult GetUsers([FromUri]UsersFilterCriteria criteria)
+        public IHttpActionResult GetUsers([FromUri] UsersFilterCriteria criteria)
         {
-            var users = _userManager.GetAllUsers(criteria);
+            var users = _userService.GetAllUsers(criteria);
             return Ok(users);
         }
 
@@ -27,13 +27,13 @@ namespace WebAPITest.Controllers
         [Route("{userId}/rentalHistories")]
         public IHttpActionResult GetUserRentalHistories([FromUri] string userId, [FromUri] RentalHistoriesFilterCriteria criteria)
         {
-            ApplicationUser user = _userManager.GetUserById(userId);
+            ApplicationUser user = _userService.GetUserById(userId);
             if (user == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_userManager.GetUserRentalHistories(userId, criteria));
+            return Ok(_userService.GetUserRentalHistories(userId, criteria));
         }
     }
 }

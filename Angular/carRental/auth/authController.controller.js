@@ -8,9 +8,8 @@
                 return false;
             }
         };
-
-        var roles = AuthFactory.getUserRoles();
-        function logout(hasCookieExpired) {
+      
+        function logout(hasCookieExpired) {          
             if ($cookies.get('user')) {
                 $cookies.remove('user');
                 $state.go('login');
@@ -29,7 +28,6 @@
         });
 
         controller.loadPhoto = function (file) {
-            debugger;
             if (file) {
                 Upload.base64DataUrl(file).then(function (base64Image) {
                     controller.user.profileImage = base64Image;
@@ -38,7 +36,7 @@
         };
 
         $scope.isAdmin = function () {
-            return roles.includes('Admin');
+            return AuthFactory.userRoles.includes('Admin');
         }
 
         $scope.logout = logout;

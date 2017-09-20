@@ -1,7 +1,7 @@
 ﻿(function () {
     function CarsController($state, $scope, ngDialog, $cookies, data, CarService, AuthFactory, Notification, Hub, Upload) {
         var controller = this;
-        var roles = AuthFactory.getUserRoles();
+        var roles = AuthFactory.userRoles;
         controller.cars = [];
         var filterCriteria = {
             brand: '',
@@ -38,21 +38,22 @@
                 'carAdded': function (dbCar) {
                     var parsedCar = JSON.parse(dbCar);
                     if (matchCriteria(parsedCar)) {
-                        controller.totalItems += 1;
                         if (controller.totalItems % controller.filterCriteria.itemsPerPage) {
                             controller.cars.push(parsedCar);
                         }
 
+                        controller.totalItems += 1;
                         $scope.$apply();
                     }
                 },
                 'carRemoved': function (carId) {
                     var carIndex = controller.cars.findIndex(car => car.id === carId);
                     if (carIndex > -1) {
-                        controller.cars.splice(controller.cars[carIndex], 1);
-                        controller.totalItems -= 1;
-                        $scope.$apply();
+                        controller.cars.splice(controller.cars[carIndex], 1);                      
                     }
+
+                    controller.totalItems -= 1;
+                    $scope.$apply();
                 }
             },
             rootPath: 'http://localhost:61818/signalr'

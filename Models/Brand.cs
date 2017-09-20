@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 
-namespace Models
+namespace CarRental.Models
 {
     public class Brand
     {

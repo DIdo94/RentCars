@@ -1,6 +1,6 @@
 ﻿using System.Web.Optimization;
 
-namespace WebAPITest
+namespace CarRental.WebApi
 {
     public class BundleConfig
     {

@@ -1,4 +1,4 @@
-﻿namespace Models
+﻿namespace CarRental.Models
 {
     public enum Status
     {

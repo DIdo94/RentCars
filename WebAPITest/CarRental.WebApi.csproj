@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebAPITest</RootNamespace>
-    <AssemblyName>WebAPITest</AssemblyName>
+    <RootNamespace>CarRental.WebApi</RootNamespace>
+    <AssemblyName>CarRental.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -309,17 +309,17 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj">
+    <ProjectReference Include="..\Models\CarRental.Models.csproj">
       <Project>{e6869b82-5503-444c-a5ec-e388c0df17ca}</Project>
-      <Name>Models</Name>
+      <Name>CarRental.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Reposotories\Data.csproj">
+    <ProjectReference Include="..\Reposotories\CarRental.Data.csproj">
       <Project>{30B40782-7F43-48C7-A37A-A58A1D8721B0}</Project>
-      <Name>Data</Name>
+      <Name>CarRental.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services\Services.csproj">
+    <ProjectReference Include="..\Services\CarRental.Services.csproj">
       <Project>{6202E3CF-4A09-4D38-B1A0-F6460DD27261}</Project>
-      <Name>Services</Name>
+      <Name>CarRental.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

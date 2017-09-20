@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace WebAPITest.Controllers
+namespace CarRental.WebApi.Controllers
 {
     public class HomeController : Controller
     {

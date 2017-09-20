@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace Models
+namespace CarRental.Models
 {
     public class RentalHistory
     {

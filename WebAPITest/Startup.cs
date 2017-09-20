@@ -2,9 +2,9 @@
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(WebAPITest.Startup))]
+[assembly: OwinStartup(typeof(CarRental.WebApi.Startup))]
 
-namespace WebAPITest
+namespace CarRental.WebApi
 {
     public partial class Startup
     {

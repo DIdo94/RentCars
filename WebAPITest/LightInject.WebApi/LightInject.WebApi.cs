@@ -32,7 +32,7 @@
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:FileMustHaveHeader", Justification = "Custom header.")]
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "All public members are documented.")]
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("DocumentationRules", "SA1649", Justification = "One source file")]
-namespace WebAPITest.LightInject.WebApi
+namespace CarRental.WebApi.LightInject.WebApi
 {
     using System.Linq;
     using System.Reflection;
@@ -89,7 +89,7 @@ namespace WebAPITest.LightInject.WebApi
     }
 }
 
-namespace WebAPITest.LightInject.WebApi
+namespace CarRental.WebApi.LightInject.WebApi
 {
     using System;
     using System.Collections.Generic;

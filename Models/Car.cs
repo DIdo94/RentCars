@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 
-namespace Models
+namespace CarRental.Models
 {
     public class Car
     {

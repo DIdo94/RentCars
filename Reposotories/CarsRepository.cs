@@ -1,13 +1,13 @@
-﻿using Data.Interfaces;
-using Models;
-using Models.RequestModels;
+﻿using CarRental.Data.Interfaces;
+using CarRental.Models;
+using CarRental.Models.RequestModels;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Data
+namespace CarRental.Data
 {
     public class CarsRepository : ICarRepository
     {

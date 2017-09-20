@@ -1,4 +1,4 @@
-﻿namespace Models.RequestModels
+﻿namespace CarRental.Models.RequestModels
 {
     public class UsersFilterCriteria : BaseFilterCriteria
     {

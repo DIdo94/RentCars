@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace WebAPITest.ViewModels.Account
+namespace CarRental.WebApi.ViewModels.Account
 {
     // Models used as parameters to AccountController actions.
 

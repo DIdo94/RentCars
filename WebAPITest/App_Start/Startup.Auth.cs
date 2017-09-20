@@ -1,4 +1,4 @@
-﻿using Data;
+﻿using CarRental.Data;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -7,9 +7,9 @@ using Newtonsoft.Json.Serialization;
 using Owin;
 using System;
 using System.Web.Http;
-using WebAPITest.Providers;
+using CarRental.WebApi.Providers;
 
-namespace WebAPITest
+namespace CarRental.WebApi
 {
     public partial class Startup
     {

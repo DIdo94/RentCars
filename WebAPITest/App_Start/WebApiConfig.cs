@@ -1,10 +1,9 @@
 ﻿using LightInject;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
-using Services.Interfaces;
 using System.Web.Http;
 
-namespace WebAPITest
+namespace CarRental.WebApi
 {
     public static class WebApiConfig
     {

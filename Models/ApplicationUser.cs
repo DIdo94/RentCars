@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Models
+namespace CarRental.Models
 {
     public class ApplicationUser : IdentityUser
     {

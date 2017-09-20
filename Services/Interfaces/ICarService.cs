@@ -1,8 +1,8 @@
-﻿using Models;
-using Models.RequestModels;
+﻿using CarRental.Models;
+using CarRental.Models.RequestModels;
 using System.Collections.Generic;
 
-namespace Services.Interfaces
+namespace CarRental.Services.Interfaces
 {
     public interface ICarService
     {

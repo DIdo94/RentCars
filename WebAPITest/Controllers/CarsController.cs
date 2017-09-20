@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using CarRental.Models;
+using CarRental.Models.RequestModels;
+using CarRental.Services.Interfaces;
+using CarRental.WebApi.Hubs;
+using CarRental.WebApi.ViewModels.Car;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Client.Http;
-using Models;
-using Models.RequestModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Services.Interfaces;
 using System.Collections.Generic;
 using System.Web.Http;
-using WebAPITest.Hubs;
-using WebAPITest.ViewModels.Car;
 
-namespace WebAPITest.Controllers
+namespace CarRental.WebApi.Controllers
 {
     [RoutePrefix("api/cars")]
     [System.Web.Http.Authorize]

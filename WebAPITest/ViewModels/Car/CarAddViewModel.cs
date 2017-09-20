@@ -1,7 +1,7 @@
-﻿using Models;
+﻿using CarRental.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebAPITest.ViewModels.Car
+namespace CarRental.WebApi.ViewModels.Car
 {
     public class CarAddViewModel
     {

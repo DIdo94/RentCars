@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
-namespace WebAPITest.Hubs
+namespace CarRental.WebApi.Hubs
 {
     [HubName("carHub")]
     public class CarHub : Hub

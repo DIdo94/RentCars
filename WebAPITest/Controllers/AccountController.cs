@@ -1,4 +1,19 @@
-﻿using System;
+﻿using AspNet.Identity.MongoDB;
+using CarRental.WebApi.Hubs;
+using CarRental.WebApi.Providers;
+using CarRental.WebApi.Results;
+using CarRental.WebApi.ViewModels.Account;
+using CarRental.Data;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.SignalR;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
+using CarRental.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
@@ -6,23 +21,8 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using AspNet.Identity.MongoDB;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
-using WebAPITest.Providers;
-using WebAPITest.Results;
-using Microsoft.AspNet.SignalR;
-using WebAPITest.Hubs;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Models;
-using Data;
-using WebAPITest.ViewModels.Account;
 
-namespace WebAPITest.Controllers
+namespace CarRental.WebApi.Controllers
 {
     [System.Web.Http.Authorize]
     [RoutePrefix("api/Account")]

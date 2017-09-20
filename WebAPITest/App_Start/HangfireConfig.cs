@@ -1,13 +1,13 @@
-﻿using Hangfire;
+﻿using CarRental.Models;
+using CarRental.Services.Interfaces;
+using Hangfire;
 using Hangfire.Mongo;
 using LightInject;
-using Models;
-using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 
-namespace WebAPITest
+namespace CarRental.WebApi
 {
     public class HangfireConfig
     {

@@ -1,11 +1,11 @@
-﻿using Data.Interfaces;
-using Models;
-using Services.Interfaces;
+﻿using CarRental.Data.Interfaces;
+using CarRental.Models;
+using CarRental.Services.Interfaces;
 using System.Collections.Generic;
 using System;
-using Models.RequestModels;
+using CarRental.Models.RequestModels;
 
-namespace Services
+namespace CarRental.Services
 {
     public class CarService : ICarService
     {

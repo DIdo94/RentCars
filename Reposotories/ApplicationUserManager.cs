@@ -2,15 +2,15 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using Models;
-using Models.RequestModels;
+using CarRental.Models;
+using CarRental.Models.RequestModels;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Reposotories.Interfaces;
 using System;
 using System.Linq;
 
-namespace Data
+namespace CarRental.Data
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>, IApplicationUserManager
     {

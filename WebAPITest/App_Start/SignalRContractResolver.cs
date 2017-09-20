@@ -3,7 +3,7 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Reflection;
 
-namespace WebAPITest
+namespace CarRental.WebApi
 {
     public class SignalRContractResolver : IContractResolver
     {

@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace WebAPITest
+namespace CarRental.WebApi
 {
     public class FilterConfig
     {

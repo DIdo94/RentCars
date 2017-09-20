@@ -7,8 +7,8 @@
     <ProjectGuid>{6202E3CF-4A09-4D38-B1A0-F6460DD27261}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Services</RootNamespace>
-    <AssemblyName>Services</AssemblyName>
+    <RootNamespace>CarRental.Services</RootNamespace>
+    <AssemblyName>CarRental.Services</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -71,13 +71,13 @@
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj">
+    <ProjectReference Include="..\Models\CarRental.Models.csproj">
       <Project>{E6869B82-5503-444C-A5EC-E388C0DF17CA}</Project>
-      <Name>Models</Name>
+      <Name>CarRental.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Reposotories\Data.csproj">
+    <ProjectReference Include="..\Reposotories\CarRental.Data.csproj">
       <Project>{30b40782-7f43-48c7-a37a-a58a1d8721b0}</Project>
-      <Name>Data</Name>
+      <Name>CarRental.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

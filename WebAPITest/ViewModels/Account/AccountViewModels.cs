@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebAPITest.ViewModels.Account
+namespace CarRental.WebApi.ViewModels.Account
 {
     // Models returned by AccountController actions.
 
