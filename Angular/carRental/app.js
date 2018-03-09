@@ -7,6 +7,7 @@
                 'carRental.users',
                 'carRental.cars',
                 'carRental.rentalHistory',
+                'carRental.payment',
                 'ui.bootstrap',
                 'ui.router',
                 'ngDialog',
@@ -16,6 +17,7 @@
                 'SignalR'])
         .service('CarService', CarService)
         .service('UserService', UserService)
+        .service('PaymentService', PaymentService)
         .factory('AuthFactory', AuthFactory)
         .config(($stateProvider, $urlRouterProvider, $locationProvider, NotificationProvider) => {
             NotificationProvider.setOptions({
@@ -79,6 +81,23 @@
                     url: '/register',
                     templateUrl: 'carRental/auth/register.template.html',
                     controller: 'AuthController as ac'
+                })
+                .state('rentSuccess', {
+                    url: '/rentSuccess?paymentId&PayerID',
+                    templateUrl: 'carRental/payment/rentSuccessful.template.html',
+                    resolve: {
+                        data: function ($stateParams) {
+                            return {
+                                paymentId: $stateParams.paymentId,
+                                payerId: $stateParams.PayerID
+                            }
+                        }
+                    },
+                    controller: 'PaymentController as pc'
+                })
+                .state('rentFailed', {
+                    url: '/rentCancelled',
+                    templateUrl: 'carRental/payment/rentCancelled.template.html'
                 })
                 .state('login', {
                     url: '/login',

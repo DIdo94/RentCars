@@ -72,6 +72,9 @@
     <Compile Include="Brand.cs" />
     <Compile Include="Car.cs" />
     <Compile Include="Model.cs" />
+    <Compile Include="PaymentModels\CarRentPayment.cs" />
+    <Compile Include="PaymentModels\PaymentDetailsRequest.cs" />
+    <Compile Include="PaymentRentInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RentalHistory.cs" />
     <Compile Include="RequestModels\BaseFilterCriteria.cs" />

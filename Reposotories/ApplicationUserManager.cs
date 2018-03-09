@@ -1,12 +1,12 @@
 ﻿using AspNet.Identity.MongoDB;
+using CarRental.Data.Interfaces;
+using CarRental.Models;
+using CarRental.Models.RequestModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using CarRental.Models;
-using CarRental.Models.RequestModels;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Reposotories.Interfaces;
 using System;
 using System.Linq;
 
@@ -78,14 +78,11 @@ namespace CarRental.Data
                 RentedFrom = DateTime.Now,
                 RentedUntil = (DateTime)car.RentedUntil
             };
-            ApplicationUser user = FindByIdAsync(userId).Result;
+            ApplicationUser user = GetUserById(userId);
             user.RentalHistories.Add(rentalHistory);
-            if (UpdateAsync(user).Result.Succeeded)
-            {
-                return true;
-            }
+            var replacedUser = _context.Users.ReplaceOne(u => u.Id == user.Id, user);
 
-            return false;
+            return replacedUser.IsAcknowledged;
         }
 
         public ApplicationUser GetUserById(string userId)

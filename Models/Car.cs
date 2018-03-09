@@ -43,5 +43,13 @@ namespace CarRental.Models
 
         [BsonElement("mainImage")]
         public string MainImage { get; set; }
+
+        [BsonIgnoreIfNull]
+        [BsonElement("rentPerHour")]
+        public int RentPerHour { get; set; }
+
+        [BsonIgnoreIfNull]
+        [BsonElement("sku")]
+        public string Sku { get; set; }
     }
 }

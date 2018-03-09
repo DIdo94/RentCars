@@ -1,7 +1,7 @@
-﻿using CarRental.Models;
+﻿using CarRental.Data.Interfaces;
+using CarRental.Models;
 using CarRental.Models.RequestModels;
 using CarRental.Services.Interfaces;
-using Reposotories.Interfaces;
 
 namespace CarRental.Services
 {

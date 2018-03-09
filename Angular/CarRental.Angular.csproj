@@ -71,8 +71,12 @@
     <Content Include="carRental\car\carModal.controller.js" />
     <Content Include="carRental\car\removeCar.template.html" />
     <Content Include="carRental\car\rentCar.template.html" />
+    <Content Include="carRental\payment\payment.controller.js" />
+    <Content Include="carRental\payment\rentCancelled.template.html" />
+    <Content Include="carRental\payment\rentSuccessful.template.html" />
     <Content Include="carRental\shared\factories\authFactory.js" />
     <Content Include="carRental\shared\services\carService.js" />
+    <Content Include="carRental\shared\services\paymentService.js" />
     <Content Include="carRental\shared\templates\paginationTemplate.html" />
     <Content Include="carRental\auth\login.template.html" />
     <Content Include="carRental\auth\authController.controller.js" />

@@ -1,4 +1,6 @@
-﻿using CarRental.Models;
+﻿using CarRental.Common;
+using CarRental.Models;
+using CarRental.Models.PaymentModels;
 using CarRental.Models.RequestModels;
 using CarRental.Services.Interfaces;
 using CarRental.WebApi.Hubs;
@@ -7,8 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using PayPal.Api;
 using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CarRental.WebApi.Controllers
 {
@@ -18,13 +22,15 @@ namespace CarRental.WebApi.Controllers
     {
         private readonly ICarService _carService;
         private readonly IHubContext _carHub;
+        private readonly IPaymentService _paymentService;
         private IUserService _userService;
 
-        public CarsController(ICarService carService, IUserService userService)
+        public CarsController(ICarService carService, IUserService userService, IPaymentService paymentService)
         {
             _carService = carService;
             _userService = userService;
             _carHub = GlobalHost.ConnectionManager.GetHubContext<CarHub>();
+            _paymentService = paymentService;
         }
 
         [HttpGet]
@@ -46,10 +52,56 @@ namespace CarRental.WebApi.Controllers
 
             if (ModelState.IsValid)
             {
-                car.RentedUntil = carViewModel.RentedUntil;
-                if (_carService.RentCar(car))
+                try
                 {
+                    car.RentedUntil = carViewModel.RentedUntil;
+                    Payment payment = _paymentService.CreatePayment(car, AppConstants.AngularSiteUrl);
+                    if (_paymentService.AddPaymentHistory(payment, car, User.Identity.GetUserId()))
+                    {
+                        var url = payment.GetApprovalUrl();
+                        return Ok(url);
+                    }
+
+                    return BadRequest();
+                }
+                catch (System.Exception)
+                {
+                    return InternalServerError();
+                }
+            }
+
+            return BadRequest();
+        }
+
+        [Route("rent/paymentSuccessful")]
+        [HttpPost]
+        public IHttpActionResult RentSuccess([FromBody]PaymentDetailsRequest paymentDetailsRequest)
+        {
+            Payment paymentHistory = _paymentService.GetPaymentByPaymentId(paymentDetailsRequest.PaymentId);
+            if (paymentHistory == null || paymentHistory.state != AppConstants.CreatedState)
+            {
+                return BadRequest();
+            }
+
+            PaymentRentInfo paymentDetails = _paymentService.GetPaymentRentInfoByPaymentId(paymentDetailsRequest.PaymentId);
+            if (paymentDetails == null)
+            {
+                return BadRequest();
+            }
+
+            Car car = _carService.GetCarById(paymentDetails.CarId);
+            if (car == null)
+            {
+                return BadRequest();
+            }
+
+            if (_carService.RentCar(car))
+            {
+                try
+                {
+                    car.RentedUntil = paymentDetails.RentedUntil;
                     _userService.AddUserRentalHistory(User.Identity.GetUserId(), car);
+                    _paymentService.ExecutePayment(paymentDetailsRequest.PaymentId, paymentDetailsRequest.PayerId);
                     string carObject = JsonConvert.SerializeObject(car, new JsonSerializerSettings
                     {
                         ContractResolver = new CamelCasePropertyNamesContractResolver()
@@ -58,8 +110,11 @@ namespace CarRental.WebApi.Controllers
 
                     return Ok();
                 }
+                catch (System.Exception)
+                {
 
-                return BadRequest();
+                    return InternalServerError();
+                }
             }
 
             return BadRequest();

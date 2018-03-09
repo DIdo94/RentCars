@@ -12,6 +12,7 @@ namespace CarRental.Data
         private IMongoCollection<Car> _cars;
         private IMongoCollection<Brand> _brands;
         private IMongoCollection<ApplicationUser> _users;
+        private IMongoCollection<PaymentRentInfo> _paymentRentInfo;
 
         public RentalCarsContext()
         {
@@ -52,6 +53,18 @@ namespace CarRental.Data
             set
             {
                 _users = value;
+            }
+        }
+
+        public IMongoCollection<PaymentRentInfo> PaymentRentInfo
+        {
+            get
+            {
+                return _database.GetCollection<PaymentRentInfo>("PaymentRentInfo");
+            }
+            set
+            {
+                _paymentRentInfo = value;
             }
         }
 

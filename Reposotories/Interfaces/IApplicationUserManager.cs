@@ -1,7 +1,7 @@
 ﻿using CarRental.Models;
 using CarRental.Models.RequestModels;
 
-namespace Reposotories.Interfaces
+namespace CarRental.Data.Interfaces
 {
     public interface IApplicationUserManager
     {

@@ -2,18 +2,19 @@
 using CarRental.Models;
 using CarRental.Services.Interfaces;
 using System.Collections.Generic;
-using System;
 using CarRental.Models.RequestModels;
 
 namespace CarRental.Services
 {
     public class CarService : ICarService
     {
-        private ICarRepository _carReposotory;
+        private readonly ICarRepository _carReposotory;
+        private readonly IPaymentService _paymentService;
 
-        public CarService(ICarRepository carRepository)
+        public CarService(ICarRepository carRepository, IPaymentService paymentService)
         {
             _carReposotory = carRepository;
+            _paymentService = paymentService;
         }
 
         public bool AddCar(Car car)

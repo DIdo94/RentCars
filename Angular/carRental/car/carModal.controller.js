@@ -38,12 +38,14 @@
     vm.rentCar = function (scope) {
         vm.car.rentedFrom = new Date().toISOString();
         vm.car.rentedUntil = new Date(vm.car.rentedUntil).toISOString();
-        CarService.rent(vm.car).success(function () {
-            filterCriteria.pageNumber = 1;
-            CarService.getAll(filterCriteria).success(function (data) {
-                CarService.setFilterCarsResult(data);
-            });
-            notification.success('Successfully rented');
+        CarService.rent(vm.car).success(function (data) {
+            notification.warning('Redirecting to payment');
+            setTimeout(() => window.location = data, 2000);
+            //filterCriteria.pageNumber = 1;
+            //CarService.getAll(filterCriteria).success(function (data) {
+            //    CarService.setFilterCarsResult(data);
+            //});
+
         }).error(function () {
             notification.error('Not successfully rented');
         });

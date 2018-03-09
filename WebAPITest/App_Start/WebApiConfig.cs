@@ -20,6 +20,7 @@ namespace CarRental.WebApi
             container.RegisterApiControllers();
             container.RegisterFrom<LightInjectConfig>();
             container.EnableWebApi(GlobalConfiguration.Configuration);
+            config.EnableCors();
             // Web API routes
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(

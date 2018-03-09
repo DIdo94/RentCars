@@ -98,6 +98,8 @@
     <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Interfaces\IApplicationUserManager.cs" />
     <Compile Include="Interfaces\ICarRepository.cs" />
+    <Compile Include="Interfaces\IPaymentHistoryRepository.cs" />
+    <Compile Include="PaymentHistoryRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RentalCarsContext.cs" />
   </ItemGroup>
